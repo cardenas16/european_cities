@@ -1,15 +1,6 @@
 #include "travelersmainwindow.h"
 #include "ui_travelersmainwindow.h"
 
-#include <QStringList>
-#include <QLineEdit>
-
-
-
-
-
-
-
 TravelersMainWindow::TravelersMainWindow(QWidget *parent) :
     QMainWindow(parent),
 
@@ -27,6 +18,7 @@ TravelersMainWindow::TravelersMainWindow(QWidget *parent) :
     //    DbManager::getInstance()->readInTxtFile();
 
     connect(ui->actionAdmin_Login, SIGNAL(triggered(bool)),this, SLOT(openAdminWindow()));
+    startingLocation = "NULL";
 }
 
 
@@ -203,12 +195,9 @@ void TravelersMainWindow::on_pb_NextCity_clicked()
 
 void TravelersMainWindow::openAdminWindow()
 {
-
     hide();
     adminWindow = new Admin(this);
     adminWindow->show();
-
-
 }
 
 // returns to index zero of the stacked widget
@@ -220,7 +209,257 @@ void TravelersMainWindow::on_pb_back_clicked()
 void TravelersMainWindow::on_pushButton_3_clicked()
 {
     qDebug() << "hello";
-    adminWindow->close();
-    show();
+
+    //adminWindow->close();
+    //show();
 }
 
+void TravelersMainWindow::openTripOperationsWindow()
+{
+    hide();
+    tripOperations = new Trip(this);
+    tripOperations->show();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+void TravelersMainWindow::on_makeCustomTripButton_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(2); // make custom trip index is '2'
+    ui->checkCitiesWidget->clear();
+    ui->makeCustomTripButtonPages->setCurrentIndex(0);
+    startingLocation = "NULL"; // DEBUG(?) RESET SELECTED INITIAL CITY
+
+    QSqlQuery query;
+    QVector<QString> cityNames = {"Amsterdam"};
+    query.prepare("SELECT Ending from Distances WHERE Starting=\"Amsterdam\"");
+    query.exec();
+
+    while (query.next())
+    {
+        if (!vectorContains(cityNames, query.value(0).toString()))
+            cityNames.append(query.value(0).toString());
+    }
+
+    for (int i = 0; i < cityNames.size(); i++)
+    {
+        QListWidgetItem *listItem = new QListWidgetItem(cityNames[i]);
+        listItem->setCheckState(Qt::Unchecked);
+        ui->checkCitiesWidget->addItem(listItem);
+    }
+
+    ui->makeCustomTripButtonPages->setCurrentIndex(1);
+}
+
+// checks to see whether or not a vector contains a given element
+bool TravelersMainWindow::vectorContains(const QVector<QString> &elements, const QString name)
+{
+    for (int i = 0; i < elements.size(); i++)
+    {
+        if (elements[i] == name)
+            return true;
+    }
+
+    return false;
+}
+
+// gets the 'checked' cities when a user selects the custom trip option
+QVector<QString> TravelersMainWindow::getSelectedCities(QListWidget *widget, bool initialCityOnly)
+{
+    QVector<QString> selectedCities;
+
+    if (initialCityOnly)
+    {
+        QStringList checkedCities;
+
+        for (int i = 0; i < widget->model()->rowCount(); i++)
+        {
+            if (widget->item(i)->checkState())
+                checkedCities.append(widget->item(i)->text());
+        }
+
+        if (checkedCities.size() == 1)
+            startingLocation = checkedCities[0];
+
+        selectedCities.clear();
+
+        return selectedCities;
+    }
+
+    else
+    {
+        for (int i = 0; i < widget->model()->rowCount(); i++)
+        {
+            if (widget->item(i)->checkState())
+                selectedCities.push_back(widget->item(i)->text());
+        }
+
+        return selectedCities;
+    }
+}
+
+
+QVector<City> TravelersMainWindow::modifiedNextClosest(QVector<City> cities, QVector<QString> selectedCities, QString startingCity)
+{
+    City potentialLocation = City();	// City variable that holds the data of the city that is potentially closest
+    QString currentCity = "";	// A QString to tell the database what city we're currently on
+    QSqlQuery query;	// The variable we're accessing the database with
+
+    // If startingCity has a value, use that city to query the database with
+    if ((startingCity != "") && (cities.size() == 0))
+    {
+        currentCity = startingCity;
+        cities.push_back(City(startingCity, 0));
+    }
+
+    // If there is not a startingCity parameter, use the last city we visited (from our QVector)
+    else
+    {
+        // Failure to pass an initial city (error check)
+        if (cities.size() == 0)
+            return cities;
+
+        currentCity = cities.at(cities.size() - 1).getName();
+    }
+
+    // Request data from the database based on the current city
+    query.prepare("SELECT Ending, Distance from Distances WHERE Starting=(:val1)");
+    query.bindValue(":val1", currentCity);
+    query.exec();
+
+    // While there are still elements in the query
+    while (query.next())
+    {
+        // If the current city is NOT a visited city, continue, else, ignore the current query
+        // Additionally, check to see if the city is one of the cities that the user selected
+        //      if it is, continue, else, ignore the current query
+        if ((!contains(cities, query.value(0).toString())) && (vectorContains(selectedCities, query.value(0).toString())))
+        {
+            // If this is the first valid city, set it as our closest city
+            if (potentialLocation.getName() == "NULL")
+            {
+                potentialLocation.setName(query.value(0).toString());
+                potentialLocation.setDistance(query.value(1).toInt());
+            }
+
+            else
+            {
+                // If it is not the first city, check to see if the distance is shorter than our current closest
+                // If it is closer, make it our closest city
+                if (query.value(1).toInt() < potentialLocation.getDistance())
+                {
+                    potentialLocation.setName(query.value(0).toString());
+                    potentialLocation.setDistance(query.value(1).toInt());
+                }
+            }
+        }
+    }
+
+    // If our query returned no results, return cities (error check)
+    if (potentialLocation.getName() == "NULL")
+        return cities;
+
+    // Once we've checked all the cities at a given location, add the closest city
+    cities.push_back(potentialLocation);
+
+    // If our cities QVector size is equal to or greater than the number of cities we want to visit, return it
+    // (Greater than is an error check)
+    if (cities.size() >= selectedCities.size() + 1)
+        return cities;
+
+    // Else, continue calling the algorithm
+    else
+        return modifiedNextClosest(cities, selectedCities);
+}
+
+// Helper function for our Algorithm
+// Checks to see whether or not we've visited a city before
+bool TravelersMainWindow::contains(const QVector<City> &cities, const QString location)
+{
+    for (int i = 0; i < cities.size(); i++)
+    {
+        if (cities[i].getName() == location)
+            return true;
+    }
+
+    return false;
+}
+
+void TravelersMainWindow::on_pushErrorButton_clicked()
+{
+    on_makeCustomTripButton_clicked();
+}
+
+void TravelersMainWindow::on_makeCustomTripButtonConfirm_clicked()
+{
+    getSelectedCities(ui->checkCitiesWidget, true);
+
+    if (startingLocation == "NULL")
+        ui->stackedWidget->setCurrentIndex(3);
+
+    else
+        populateSubsequentCustomTripOptions();
+}
+
+void TravelersMainWindow::populateSubsequentCustomTripOptions()
+{
+    ui->stackedWidget->setCurrentIndex(4);
+    ui->makeCustomSubTripButtonPages->setCurrentIndex(0);
+    ui->checkSubsequentCities->clear();
+    QSqlQuery query;
+    QVector<QString> cityNames;
+    query.prepare("SELECT Ending from Distances WHERE Starting=(:val1)");
+    query.bindValue(":val1", startingLocation);
+    query.exec();
+
+    while (query.next())
+    {
+        if (!vectorContains(cityNames, query.value(0).toString()))
+            cityNames.append(query.value(0).toString());
+    }
+
+    for (int i = 0; i < cityNames.size(); i++)
+    {
+        QListWidgetItem *listItem = new QListWidgetItem(cityNames[i]);
+        listItem->setCheckState(Qt::Unchecked);
+        ui->checkSubsequentCities->addItem(listItem);
+    }
+
+    ui->makeCustomSubTripButtonPages->setCurrentIndex(1);
+}
+
+void TravelersMainWindow::on_makeCustomSubTripButtonConfirm_clicked()
+{
+    QVector<QString> subsequentCities = getSelectedCities(ui->checkSubsequentCities);
+
+    if (subsequentCities.size() < 1)
+        ui->stackedWidget->setCurrentIndex(5);
+
+    else
+    {
+        QVector<City> customTrip;
+        customTrip = modifiedNextClosest(customTrip, subsequentCities, startingLocation);
+
+        ui->completedCustomTrip->clear();
+
+        for (int i = 0; i < customTrip.size(); i++)
+            ui->completedCustomTrip->addItem(QString::number(i + 1) + ": " + customTrip[i].getName());
+
+        ui->stackedWidget->setCurrentIndex(6);
+    }
+
+}
+
+void TravelersMainWindow::on_subsequentTripErrorButton_clicked()
+{
+    populateSubsequentCustomTripOptions();
+}

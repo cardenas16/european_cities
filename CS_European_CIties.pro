@@ -28,7 +28,8 @@ SOURCES += \
     dbmanager.cpp \
     trip.cpp \
     test.cpp \
-    admin.cpp
+    admin.cpp \
+    city.cpp
 
 HEADERS += \
         travelersmainwindow.h \
@@ -36,7 +37,8 @@ HEADERS += \
     city.h \
     trip.h \
     test.h \
-    admin.h
+    admin.h \
+    city.h
 
 FORMS += \
         travelersmainwindow.ui \

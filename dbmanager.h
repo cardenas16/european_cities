@@ -23,6 +23,7 @@ public:
     void readInTxtFile();
     bool itemExist(const QString & city, const QString & item);
     void addItem(const QString& city, const QString& item, const double & price);
+    void deleteItem(const QString& city, const QString& item);
 
 
 

@@ -5,6 +5,7 @@
 #include <QSqlTableModel>
 #include <QStringListModel>
 #include <QSqlQuery>
+#include <QModelIndex>
 
 
 #include "dbmanager.h"
@@ -29,11 +30,27 @@ private slots:
 
 
 
+    void on_addItemButton_clicked();
+
+    void test(QModelIndex index);
+
+    void onTableClicked(const QSqlRecord &index);
+
+    void selectedRow(QModelIndex index);
+
+
+
+
+
+    void on_deleteButton_clicked();
+
 private:
     Ui::Admin *ui;
     QSqlTableModel * tableModel;
     QStringListModel * citiesModel;
-
+    bool repeatedItem;
+    int inputRuns;
+    QModelIndex highlightedCell;
 
 
 };
@@ -41,18 +58,3 @@ private:
 #endif // ADMIN_H
 
 
-/*
- *
-
-
-
-private slots:
-    void on_loginButton_clicked();
-
-    void setTableView(int index);
-
-    void on_addItemButton_clicked();
-
-    void on_saveButton_clicked();
-
- */
