@@ -28,7 +28,9 @@ SOURCES += \
     dbmanager.cpp \
     trip.cpp \
     test.cpp \
-    admin.cpp
+    admin.cpp \
+    customdelegate.cpp \
+    spinbox.cpp
 
 HEADERS += \
         travelersmainwindow.h \
@@ -36,7 +38,9 @@ HEADERS += \
     city.h \
     trip.h \
     test.h \
-    admin.h
+    admin.h \
+    customdelegate.h \
+    spinbox.h
 
 FORMS += \
         travelersmainwindow.ui \

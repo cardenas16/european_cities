@@ -3,10 +3,7 @@
 
 #include <QStringList>
 #include <QLineEdit>
-
-
-
-
+#include <iostream>
 
 
 
@@ -18,12 +15,12 @@ TravelersMainWindow::TravelersMainWindow(QWidget *parent) :
     ui->setupUi(this);
 
 
-
+//        DbManager::getInstance()->initDataBase();
     populateDisplay();
 
 
     //        DbManager::getInstance()->getCities();
-    //        DbManager::getInstance()->initDataBase();
+
     //    DbManager::getInstance()->readInTxtFile();
 
     connect(ui->actionAdmin_Login, SIGNAL(triggered(bool)),this, SLOT(openAdminWindow()));
@@ -56,8 +53,9 @@ void TravelersMainWindow::populateDisplay()
         float distanceToBerlin = DbManager::getInstance()->getDistanceInbetween(cities[index], "Berlin");
 
 
+
         // creates a new push button, the button is displayed with the name of the city and the distance to berlin
-        QPushButton* cityName = new QPushButton(cities[index]+ "\nDistance to Berlin: " + QString::number(distanceToBerlin) ,this);
+        QPushButton* cityName = new QPushButton(cities[index]+ "\nDistance to Berlin: "  +  QString::number(distanceToBerlin) ,this);
 
         // sets the name of the object, this will be used as a parameter in the next line
         cityName->setObjectName(cities[index]);
@@ -123,8 +121,9 @@ void TravelersMainWindow::selectedCity()
     // for loop - displays the items inside menuItems vector
     for(int index = 0; index < menuItems.size(); index++)
     {
+
         // creates a new button that will display the name of the item
-        QPushButton * item = new QPushButton(menuItems[index].name, this);
+        QPushButton * item = new QPushButton(menuItems[index].name + "\n$" + QString::number(menuItems[index].price), this);
 
         item->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
@@ -180,13 +179,14 @@ void TravelersMainWindow::on_pb_NextCity_clicked()
 
     //  calles db manager to obtain the items for the certain city
     QVector<TraditionalFoodItems> menuItems = DbManager::getInstance()->getMenuItems(cityName);
-    qDebug() << "size: " << menuItems.size();
+
+
 
     // for loop - displays the items inside menuItems vector
     for(int index = 0; index < menuItems.size(); index++)
     {
-         // creates a new button that will display the name of the item
-        QPushButton * item = new QPushButton(menuItems[index].name, this);
+        // creates a new button that will display the name of the item
+        QPushButton * item = new QPushButton(menuItems[index].name + "\n$" + QString::number(menuItems[index].price), this);
 
         item->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
@@ -214,7 +214,7 @@ void TravelersMainWindow::openAdminWindow()
 // returns to index zero of the stacked widget
 void TravelersMainWindow::on_pb_back_clicked()
 {
-     ui->stackedWidget->setCurrentIndex(0);
+    ui->stackedWidget->setCurrentIndex(0);
 }
 
 void TravelersMainWindow::on_pushButton_3_clicked()
