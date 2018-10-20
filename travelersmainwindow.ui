@@ -45,7 +45,7 @@ min-width: 80px;
  </string>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>4</number>
     </property>
     <widget class="QWidget" name="page">
      <widget class="QWidget" name="layoutWidget">
@@ -167,9 +167,9 @@ min-width: 80px;
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>0</y>
-        <width>411</width>
-        <height>241</height>
+        <y>30</y>
+        <width>371</width>
+        <height>211</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="makeCustomTripLayout"/>
@@ -177,9 +177,9 @@ min-width: 80px;
      <widget class="QWidget" name="horizontalLayoutWidget">
       <property name="geometry">
        <rect>
-        <x>120</x>
+        <x>109</x>
         <y>240</y>
-        <width>160</width>
+        <width>151</width>
         <height>41</height>
        </rect>
       </property>
@@ -191,7 +191,7 @@ min-width: 80px;
          </property>
          <widget class="QWidget" name="blankPage"/>
          <widget class="QWidget" name="buttonPage">
-          <widget class="QPushButton" name="makeCustomTripButtonConfirm">
+          <widget class="QPushButton" name="confirmChoicesButton">
            <property name="geometry">
             <rect>
              <x>10</x>
@@ -201,7 +201,7 @@ min-width: 80px;
             </rect>
            </property>
            <property name="text">
-            <string>Select Initial City</string>
+            <string>Confirm Selection</string>
            </property>
           </widget>
          </widget>
@@ -209,22 +209,44 @@ min-width: 80px;
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="horizontalLayoutWidget_4">
+      <property name="geometry">
+       <rect>
+        <x>9</x>
+        <y>0</y>
+        <width>371</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="currentPageDescriptionLayout">
+       <item>
+        <widget class="QLabel" name="pageDescriptionLabel">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
-    <widget class="QWidget" name="page404">
+    <widget class="QWidget" name="errorPage">
      <widget class="QWidget" name="horizontalLayoutWidget_2">
       <property name="geometry">
        <rect>
         <x>120</x>
-        <y>129</y>
+        <y>90</y>
         <width>160</width>
         <height>31</height>
        </rect>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <layout class="QHBoxLayout" name="errorPageLabelLayout">
        <item>
         <widget class="QLabel" name="errorLabel">
          <property name="text">
-          <string>Please Select Only One City!</string>
+          <string/>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -237,14 +259,14 @@ min-width: 80px;
       <property name="geometry">
        <rect>
         <x>120</x>
-        <y>160</y>
+        <y>121</y>
         <width>160</width>
         <height>31</height>
        </rect>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <layout class="QHBoxLayout" name="errorPageButtonLayout">
        <item>
-        <widget class="QPushButton" name="pushErrorButton">
+        <widget class="QPushButton" name="errorButton">
          <property name="text">
           <string>Ok</string>
          </property>
@@ -253,102 +275,7 @@ min-width: 80px;
       </layout>
      </widget>
     </widget>
-    <widget class="QWidget" name="page_3">
-     <widget class="QWidget" name="verticalLayoutWidget_3">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>0</y>
-        <width>411</width>
-        <height>241</height>
-       </rect>
-      </property>
-      <layout class="QVBoxLayout" name="makeCustomSubTripLayout">
-       <item>
-        <widget class="QListWidget" name="checkSubsequentCities"/>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="horizontalLayoutWidget_4">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>240</y>
-        <width>160</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <layout class="QHBoxLayout" name="makeCustomSubTripButtonLayout">
-       <item>
-        <widget class="QStackedWidget" name="makeCustomSubTripButtonPages">
-         <property name="currentIndex">
-          <number>1</number>
-         </property>
-         <widget class="QWidget" name="blankPage_3"/>
-         <widget class="QWidget" name="buttonPage_3">
-          <widget class="QPushButton" name="makeCustomSubTripButtonConfirm">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>2</y>
-             <width>141</width>
-             <height>31</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Select Additional Cities</string>
-           </property>
-          </widget>
-         </widget>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="page_4">
-     <widget class="QWidget" name="horizontalLayoutWidget_5">
-      <property name="geometry">
-       <rect>
-        <x>130</x>
-        <y>139</y>
-        <width>191</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_6">
-       <item>
-        <widget class="QLabel" name="errorLabel_2">
-         <property name="text">
-          <string>Select At Least One Additional City!</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="horizontalLayoutWidget_6">
-      <property name="geometry">
-       <rect>
-        <x>150</x>
-        <y>170</y>
-        <width>151</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_7">
-       <item>
-        <widget class="QPushButton" name="subsequentTripErrorButton">
-         <property name="text">
-          <string>Ok</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="page_5">
+    <widget class="QWidget" name="generatedTripPage">
      <widget class="QWidget" name="verticalLayoutWidget">
       <property name="geometry">
        <rect>
@@ -360,13 +287,57 @@ min-width: 80px;
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <widget class="QListWidget" name="completedCustomTrip"/>
+        <widget class="QListWidget" name="completedTrip"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="horizontalLayoutWidget_5">
+      <property name="geometry">
+       <rect>
+        <x>39</x>
+        <y>10</y>
+        <width>291</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="generatedTripLabelLayout">
+       <item>
+        <widget class="QLabel" name="generatedTripLabel">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="horizontalLayoutWidget_6">
+      <property name="geometry">
+       <rect>
+        <x>39</x>
+        <y>269</y>
+        <width>291</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="distanceTraveledLayout">
+       <item>
+        <widget class="QLabel" name="distanceTraveledLabel">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
     </widget>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="takeLondonTripButton">
     <property name="geometry">
      <rect>
       <x>550</x>
@@ -379,13 +350,13 @@ min-width: 80px;
      <string>Take Trip Starting London</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="visitInitialCities">
     <property name="geometry">
      <rect>
       <x>550</x>
-      <y>180</y>
+      <y>171</y>
       <width>191</width>
-      <height>32</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -403,19 +374,6 @@ min-width: 80px;
     </property>
     <property name="text">
      <string>Make Custom Trip</string>
-    </property>
-   </widget>
-   <widget class="QListWidget" name="checkCitiesWidget">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>260</x>
-      <y>380</y>
-      <width>409</width>
-      <height>239</height>
-     </rect>
     </property>
    </widget>
   </widget>

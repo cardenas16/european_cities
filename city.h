@@ -1,3 +1,4 @@
+#pragma once
 #ifndef CITY_H
 #define CITY_H
 
@@ -18,12 +19,6 @@ public:
 private:
     QString cityName;
     int distanceFromPreviousCity;
-};
-
-struct TraditionalFoodItems
-{
-    QString name;
-    double price;
 };
 
 QVector<City> nextClosest(QVector<City> cities, int numCities, QString startingCity = "");

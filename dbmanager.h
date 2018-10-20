@@ -1,3 +1,4 @@
+#pragma once
 #ifndef DBMANAGER_H
 #define DBMANAGER_H
 
@@ -9,6 +10,12 @@
 #include <QTextCodec>
 #include <algorithm>
 #include "city.h"
+
+struct TraditionalFoodItems
+{
+    QString name;
+    double price;
+};
 
 class DbManager
 {
@@ -24,8 +31,6 @@ public:
     bool itemExist(const QString & city, const QString & item);
     void addItem(const QString& city, const QString& item, const double & price);
     void deleteItem(const QString& city, const QString& item);
-
-
 
 private:
     QSqlDatabase db_manager;

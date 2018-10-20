@@ -8,8 +8,6 @@ TravelersMainWindow::TravelersMainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-
-
     populateDisplay();
 
 
@@ -19,12 +17,16 @@ TravelersMainWindow::TravelersMainWindow(QWidget *parent) :
 
     connect(ui->actionAdmin_Login, SIGNAL(triggered(bool)),this, SLOT(openAdminWindow()));
     startingLocation = "NULL";
+    citySelectionWidget = nullptr;
+    ui->stackedWidget->setCurrentIndex(DisplayCities);
 }
 
 
 TravelersMainWindow::~TravelersMainWindow()
 {
     delete ui;
+    if (citySelectionWidget != nullptr)
+        delete citySelectionWidget;
 }
 
 
@@ -206,14 +208,6 @@ void TravelersMainWindow::on_pb_back_clicked()
      ui->stackedWidget->setCurrentIndex(0);
 }
 
-void TravelersMainWindow::on_pushButton_3_clicked()
-{
-    qDebug() << "hello";
-
-    //adminWindow->close();
-    //show();
-}
-
 void TravelersMainWindow::openTripOperationsWindow()
 {
     hide();
@@ -228,19 +222,22 @@ void TravelersMainWindow::openTripOperationsWindow()
 
 
 
-
-
-
-
+// This function is where the user is first prompted to check an initial city
 void TravelersMainWindow::on_makeCustomTripButton_clicked()
 {
-    ui->stackedWidget->setCurrentIndex(2); // make custom trip index is '2'
-    ui->checkCitiesWidget->clear();
-    ui->makeCustomTripButtonPages->setCurrentIndex(0);
-    startingLocation = "NULL"; // DEBUG(?) RESET SELECTED INITIAL CITY
+    if (citySelectionWidget != nullptr)
+        deleteCitySelectionWidget();
+
+    citySelectionWidget = new QListWidget;
+    ui->stackedWidget->setCurrentIndex(CheckableCities); // switch to checkable cities
+    ui->makeCustomTripButtonPages->setCurrentIndex(On); // show confirm button
+    startingLocation = "NULL"; // reset initial city each time this page is called
+    ui->makeCustomTripLayout->addWidget(citySelectionWidget); // add our checkable cities
+    currentStep = InitialCity; // set the current step of trip generation
+    ui->pageDescriptionLabel->setText("Select A Starting City For Your Custom Trip!");
 
     QSqlQuery query;
-    QVector<QString> cityNames = {"Amsterdam"};
+    QVector<QString> cityNames = {"Amsterdam"}; // selected amsterdam to preserve alphabetical order
     query.prepare("SELECT Ending from Distances WHERE Starting=\"Amsterdam\"");
     query.exec();
 
@@ -250,14 +247,15 @@ void TravelersMainWindow::on_makeCustomTripButton_clicked()
             cityNames.append(query.value(0).toString());
     }
 
+    // add cities to our checkable list widget
     for (int i = 0; i < cityNames.size(); i++)
     {
         QListWidgetItem *listItem = new QListWidgetItem(cityNames[i]);
         listItem->setCheckState(Qt::Unchecked);
-        ui->checkCitiesWidget->addItem(listItem);
+        citySelectionWidget->addItem(listItem);
     }
 
-    ui->makeCustomTripButtonPages->setCurrentIndex(1);
+    ui->makeCustomTripButtonPages->setCurrentIndex(Off);
 }
 
 // checks to see whether or not a vector contains a given element
@@ -273,18 +271,23 @@ bool TravelersMainWindow::vectorContains(const QVector<QString> &elements, const
 }
 
 // gets the 'checked' cities when a user selects the custom trip option
-QVector<QString> TravelersMainWindow::getSelectedCities(QListWidget *widget, bool initialCityOnly)
+QVector<QString> TravelersMainWindow::getSelectedCities(bool initialCityOnly)
 {
     QVector<QString> selectedCities;
+
+    // error check, returns an empty vector if the widget doesn't exist
+    // (pulls data from a widget)
+    if (citySelectionWidget == nullptr)
+        return selectedCities;
 
     if (initialCityOnly)
     {
         QStringList checkedCities;
 
-        for (int i = 0; i < widget->model()->rowCount(); i++)
+        for (int i = 0; i < citySelectionWidget->model()->rowCount(); i++)
         {
-            if (widget->item(i)->checkState())
-                checkedCities.append(widget->item(i)->text());
+            if (citySelectionWidget->item(i)->checkState())
+                checkedCities.append(citySelectionWidget->item(i)->text());
         }
 
         if (checkedCities.size() == 1)
@@ -297,16 +300,15 @@ QVector<QString> TravelersMainWindow::getSelectedCities(QListWidget *widget, boo
 
     else
     {
-        for (int i = 0; i < widget->model()->rowCount(); i++)
+        for (int i = 0; i < citySelectionWidget->model()->rowCount(); i++)
         {
-            if (widget->item(i)->checkState())
-                selectedCities.push_back(widget->item(i)->text());
+            if (citySelectionWidget->item(i)->checkState())
+                selectedCities.push_back(citySelectionWidget->item(i)->text());
         }
 
         return selectedCities;
     }
 }
-
 
 QVector<City> TravelersMainWindow::modifiedNextClosest(QVector<City> cities, QVector<QString> selectedCities, QString startingCity)
 {
@@ -394,27 +396,18 @@ bool TravelersMainWindow::contains(const QVector<City> &cities, const QString lo
     return false;
 }
 
-void TravelersMainWindow::on_pushErrorButton_clicked()
-{
-    on_makeCustomTripButton_clicked();
-}
-
-void TravelersMainWindow::on_makeCustomTripButtonConfirm_clicked()
-{
-    getSelectedCities(ui->checkCitiesWidget, true);
-
-    if (startingLocation == "NULL")
-        ui->stackedWidget->setCurrentIndex(3);
-
-    else
-        populateSubsequentCustomTripOptions();
-}
-
+// This function prompts the user to select additional cities to visit on their custom trip
 void TravelersMainWindow::populateSubsequentCustomTripOptions()
 {
-    ui->stackedWidget->setCurrentIndex(4);
-    ui->makeCustomSubTripButtonPages->setCurrentIndex(0);
-    ui->checkSubsequentCities->clear();
+    if (citySelectionWidget != nullptr)
+        deleteCitySelectionWidget();
+
+    ui->stackedWidget->setCurrentIndex(CheckableCities);
+    citySelectionWidget = new QListWidget;
+    ui->makeCustomTripLayout->addWidget(citySelectionWidget);
+    ui->makeCustomTripButtonPages->setCurrentIndex(On);
+    ui->pageDescriptionLabel->setText("Please Select Additional Cities You Would Like To Visit!");
+
     QSqlQuery query;
     QVector<QString> cityNames;
     query.prepare("SELECT Ending from Distances WHERE Starting=(:val1)");
@@ -431,35 +424,123 @@ void TravelersMainWindow::populateSubsequentCustomTripOptions()
     {
         QListWidgetItem *listItem = new QListWidgetItem(cityNames[i]);
         listItem->setCheckState(Qt::Unchecked);
-        ui->checkSubsequentCities->addItem(listItem);
+        citySelectionWidget->addItem(listItem);
     }
 
-    ui->makeCustomSubTripButtonPages->setCurrentIndex(1);
+    ui->makeCustomTripButtonPages->setCurrentIndex(Off);
 }
 
-void TravelersMainWindow::on_makeCustomSubTripButtonConfirm_clicked()
+void TravelersMainWindow::on_confirmChoicesButton_clicked()
 {
-    QVector<QString> subsequentCities = getSelectedCities(ui->checkSubsequentCities);
+    if (currentStep == InitialCity)
+    {
+        getSelectedCities(true);
 
-    if (subsequentCities.size() < 1)
-        ui->stackedWidget->setCurrentIndex(5);
+        // if the user failed to select the proper number of starting cities populate the error page
+        if (startingLocation == "NULL")
+        {
+            ui->errorLabel->setText("Please Select A Single City!");
+            ui->stackedWidget->setCurrentIndex(ErrorPage);
+        }
+
+        else
+        {
+            if (citySelectionWidget != nullptr)
+                deleteCitySelectionWidget();
+
+            currentStep = AdditionalCities;
+            populateSubsequentCustomTripOptions();
+        }
+    }
 
     else
     {
-        QVector<City> customTrip;
-        customTrip = modifiedNextClosest(customTrip, subsequentCities, startingLocation);
+        QVector<QString> subsequentCities = getSelectedCities();
 
-        ui->completedCustomTrip->clear();
+        // if the user failed to select additional cities
+        if (subsequentCities.size() < 1)
+        {
+            ui->errorLabel->setText("Please Select Additional Cities!");
+            ui->stackedWidget->setCurrentIndex(ErrorPage);
+        }
 
-        for (int i = 0; i < customTrip.size(); i++)
-            ui->completedCustomTrip->addItem(QString::number(i + 1) + ": " + customTrip[i].getName());
+        else
+        {
+            QVector<City> customTrip;
+            customTrip = modifiedNextClosest(customTrip, subsequentCities, startingLocation);
+            ui->completedTrip->clear();
+            ui->generatedTripLabel->setText("Here's The Order For Your Custom Trip!");
+            ui->distanceTraveledLabel->setText("Total Distance Traveled: " + QString::number(getDistanceTraveled(customTrip)));
 
-        ui->stackedWidget->setCurrentIndex(6);
+            for (int i = 0; i < customTrip.size(); i++)
+                ui->completedTrip->addItem(QString::number(i + 1) + ": " + customTrip[i].getName());
+
+            ui->stackedWidget->setCurrentIndex(GeneratedTrip);
+        }
     }
-
 }
 
-void TravelersMainWindow::on_subsequentTripErrorButton_clicked()
+void TravelersMainWindow::on_errorButton_clicked()
 {
-    populateSubsequentCustomTripOptions();
+    if (citySelectionWidget != nullptr)
+        deleteCitySelectionWidget();
+
+    if (currentStep == InitialCity)
+        on_makeCustomTripButton_clicked();
+
+    else
+        populateSubsequentCustomTripOptions();
+}
+
+// this function exists as an error check to prevent duplications
+void TravelersMainWindow::deleteCitySelectionWidget()
+{
+    if (citySelectionWidget != nullptr)
+    {
+        delete citySelectionWidget;
+        citySelectionWidget = nullptr;
+    }
+}
+
+void TravelersMainWindow::on_takeLondonTripButton_clicked()
+{
+    QSqlQuery query; // The variable we're accessing the database with
+    int numCities = 0;
+    // Request data from the database based on the base city
+    query.prepare("SELECT Ending from Distances WHERE Starting=\"London\"");
+    query.exec();
+
+    while (query.next())
+    {
+        numCities++;
+    }
+
+    QVector<City> shortestLondonTrip;
+    shortestLondonTrip = nextClosest(shortestLondonTrip, numCities + 1, "London");
+
+    ui->completedTrip->clear();
+    ui->generatedTripLabel->setText("Here's The Order For Your Shortest Trip Starting At London!");
+    ui->distanceTraveledLabel->setText("Total Distance Traveled: " + QString::number(getDistanceTraveled(shortestLondonTrip)));
+
+    for (int i = 0; i < shortestLondonTrip.size(); i++)
+        ui->completedTrip->addItem(QString::number(i + 1) + ": " + shortestLondonTrip[i].getName());
+
+    ui->stackedWidget->setCurrentIndex(GeneratedTrip);
+}
+
+void TravelersMainWindow::on_visitInitialCities_clicked()
+{
+    QVector<QString> initialElevenCities = { "Amsterdam", "Berlin", "Brussels", "Budapest", "Hamburg", "Lisbon",
+                                             "London", "Madrid", "Paris", "Prague", "Rome" };
+    QVector<City> initialCitiesTrip;
+    initialCitiesTrip = modifiedNextClosest(initialCitiesTrip, initialElevenCities, "Paris");
+
+    ui->completedTrip->clear();
+    ui->generatedTripLabel->setText("Here's The Order For Your Initial Eleven Cities Trip!");
+    ui->distanceTraveledLabel->setText("Total Distance Traveled: " + QString::number(getDistanceTraveled(initialCitiesTrip)));
+
+    for (int i = 0; i < initialCitiesTrip.size(); i++)
+        ui->completedTrip->addItem(QString::number(i + 1) + ": " + initialCitiesTrip[i].getName());
+
+    ui->stackedWidget->setCurrentIndex(GeneratedTrip);
 }

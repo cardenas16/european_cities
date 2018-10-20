@@ -27,23 +27,19 @@ SOURCES += \
         travelersmainwindow.cpp \
     dbmanager.cpp \
     trip.cpp \
-    test.cpp \
     admin.cpp \
     city.cpp
 
 HEADERS += \
         travelersmainwindow.h \
     dbmanager.h \
-    city.h \
     trip.h \
-    test.h \
     admin.h \
     city.h
 
 FORMS += \
         travelersmainwindow.ui \
     trip.ui \
-    test.ui \
     admin.ui
 
 # Default rules for deployment.
