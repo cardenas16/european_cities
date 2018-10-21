@@ -264,7 +264,7 @@ void Admin::on_deleteButton_clicked()
      QString selectedCity = cities.at(comboIndex);
 
      qDebug() << "selected city: " << selectedCity << " item: " << item;
-     DbManager::getInstance()->deleteItem(selectedCity, item);
+     //DbManager::getInstance()->deleteItem(selectedCity, item);
 
     setTableView(comboIndex);
 }

@@ -48,7 +48,7 @@ void TravelersMainWindow::populateDisplay()
     for(int index = 0; index < cities.size(); index++)
     {
         // a call to the db manager to get the distance betweem two cities, passes the starting ctiy name and then the ending city name
-        float distanceToBerlin = DbManager::getInstance()->getDistanceInbetween(cities[index], "Berlin");
+        int distanceToBerlin = DbManager::getInstance()->getDistanceInbetween(cities[index], "Berlin");
 
 
         // creates a new push button, the button is displayed with the name of the city and the distance to berlin
@@ -208,20 +208,6 @@ void TravelersMainWindow::on_pb_back_clicked()
 {
      ui->stackedWidget->setCurrentIndex(0);
 }
-
-void TravelersMainWindow::openTripOperationsWindow()
-{
-    hide();
-    tripOperations = new Trip(this);
-    tripOperations->show();
-}
-
-
-
-
-
-
-
 
 // This function is where the user is first prompted to check an initial city
 void TravelersMainWindow::on_makeCustomTripButton_clicked()
@@ -467,14 +453,14 @@ void TravelersMainWindow::on_confirmChoicesButton_clicked()
 
         else
         {
-            QVector<City> customTrip;
-            customTrip = modifiedNextClosest(customTrip, subsequentCities, startingLocation);
+            currentTrip.clear();
+            currentTrip = modifiedNextClosest(currentTrip, subsequentCities, startingLocation);
             ui->completedTrip->clear();
             ui->generatedTripLabel->setText("Here's The Order For Your Custom Trip!");
-            ui->distanceTraveledLabel->setText("Total Distance Traveled: " + QString::number(getDistanceTraveled(customTrip)));
+            ui->distanceTraveledLabel->setText("Total Distance Traveled: " + QString::number(getDistanceTraveled(currentTrip)));
 
-            for (int i = 0; i < customTrip.size(); i++)
-                ui->completedTrip->addItem(QString::number(i + 1) + ": " + customTrip[i].getName());
+            for (int i = 0; i < currentTrip.size(); i++)
+                ui->completedTrip->addItem(QString::number(i + 1) + ": " + currentTrip[i].getName());
 
             ui->stackedWidget->setCurrentIndex(GeneratedTrip);
         }
@@ -516,15 +502,15 @@ void TravelersMainWindow::on_takeLondonTripButton_clicked()
         numCities++;
     }
 
-    QVector<City> shortestLondonTrip;
-    shortestLondonTrip = nextClosest(shortestLondonTrip, numCities + 1, "London");
+    currentTrip.clear();
+    currentTrip = nextClosest(currentTrip, numCities + 1, "London");
 
     ui->completedTrip->clear();
     ui->generatedTripLabel->setText("Here's The Order For Your Shortest Trip Starting At London!");
-    ui->distanceTraveledLabel->setText("Total Distance Traveled: " + QString::number(getDistanceTraveled(shortestLondonTrip)));
+    ui->distanceTraveledLabel->setText("Total Distance Traveled: " + QString::number(getDistanceTraveled(currentTrip)));
 
-    for (int i = 0; i < shortestLondonTrip.size(); i++)
-        ui->completedTrip->addItem(QString::number(i + 1) + ": " + shortestLondonTrip[i].getName());
+    for (int i = 0; i < currentTrip.size(); i++)
+        ui->completedTrip->addItem(QString::number(i + 1) + ": " + currentTrip[i].getName());
 
     ui->stackedWidget->setCurrentIndex(GeneratedTrip);
 }
@@ -533,15 +519,15 @@ void TravelersMainWindow::on_visitInitialCities_clicked()
 {
     QVector<QString> initialElevenCities = { "Amsterdam", "Berlin", "Brussels", "Budapest", "Hamburg", "Lisbon",
                                              "London", "Madrid", "Paris", "Prague", "Rome" };
-    QVector<City> initialCitiesTrip;
-    initialCitiesTrip = modifiedNextClosest(initialCitiesTrip, initialElevenCities, "Paris");
+    currentTrip.clear();
+    currentTrip = modifiedNextClosest(currentTrip, initialElevenCities, "Paris");
 
     ui->completedTrip->clear();
     ui->generatedTripLabel->setText("Here's The Order For Your Initial Eleven Cities Trip!");
-    ui->distanceTraveledLabel->setText("Total Distance Traveled: " + QString::number(getDistanceTraveled(initialCitiesTrip)));
+    ui->distanceTraveledLabel->setText("Total Distance Traveled: " + QString::number(getDistanceTraveled(currentTrip)));
 
-    for (int i = 0; i < initialCitiesTrip.size(); i++)
-        ui->completedTrip->addItem(QString::number(i + 1) + ": " + initialCitiesTrip[i].getName());
+    for (int i = 0; i < currentTrip.size(); i++)
+        ui->completedTrip->addItem(QString::number(i + 1) + ": " + currentTrip[i].getName());
 
     ui->stackedWidget->setCurrentIndex(GeneratedTrip);
 }
@@ -549,6 +535,6 @@ void TravelersMainWindow::on_visitInitialCities_clicked()
 void TravelersMainWindow::on_confirmGeneratedTripButton_clicked()
 {
     hide();
-    tripOperations = new Trip(this);
+    tripOperations = new Trip(this, currentTrip);
     tripOperations->show();
 }

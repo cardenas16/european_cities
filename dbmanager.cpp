@@ -86,21 +86,22 @@ void DbManager::initDataBase()
     itemsFile.readLine();
 
     // the next line read in stored inside a QByteArray variable
-     QByteArray itemsLine = itemsFile.readLine();
+    QByteArray itemsLine = itemsFile.readLine();
 
-     // the next line read in stored inside a QByteArray variable
-     QByteArray distancesLine = distancesFile.readLine();
-
-
+    // the next line read in stored inside a QByteArray variable
+    QByteArray distancesLine = distancesFile.readLine();
 
 
 
-     QVector<QString> cities; // holds the names of the cities with in the distance file
-     QString city;      // used for storing the name of the city that which the items and costs belong too
-     QString tempItem;  // temporary item
-     QString tempCost;  // temporary cost
-     QVector<QString> costs;  // vector to hold the costs of a city
-     QVector<QString> items;  // vector to hold the items of a city
+
+
+    QVector<QString> cities; // holds the names of the cities with in the distance file
+    QString city;      // used for storing the name of the city that which the items and costs belong too
+    QString tempItem;  // temporary item
+    QString tempCost;  // temporary cost
+    QVector<QString> costs;  // vector to hold the costs of a city
+    QVector<QString> items;  // vector to hold the items of a city
+    QStringRef subString;
 
 
 
@@ -113,9 +114,23 @@ void DbManager::initDataBase()
         // reads the next that holds the items and the cost value
         itemsLine = itemsFile.readLine();
 
+
+
         // stores the items and cost, by spiiting itemsLine by commas and accessing the element inside the array
         tempItem = itemsLine.split(',').at(1);
         tempCost = itemsLine.split(',').at(2);
+
+        // trims the prices, removes whitespace from the start and the end.
+        tempCost = tempCost.trimmed();
+
+        //        qDebug() << "tempCost: " << tempCost << endl;
+
+        // creats a subsring that takes the $ from the string
+        QStringRef subString(&tempCost, 1, tempCost.size()-1);
+
+        // the subString is assigned back to tempCost
+        tempCost = subString.toString();
+
 
 
         // checks if  the item is NULL or at the end of file
@@ -128,6 +143,17 @@ void DbManager::initDataBase()
 
             tempItem = itemsLine.split(',').at(1); // stores the item into the tempVariable
             tempCost = itemsLine.split(',').at(2); // stores the item into the tempVariable
+
+            // trims the prices, removes whitespace from the start and the end.
+            tempCost = tempCost.trimmed();
+
+            // creats a subsring that takes the $ from the string
+            QStringRef subString(&tempCost, 1, tempCost.size()-1);
+
+            // the subString is assigned back to tempCost
+            tempCost = subString.toString();
+
+
 
         }
         // since the while loop exits out when the file is at the last line, we add the push back the last
@@ -168,21 +194,21 @@ void DbManager::initDataBase()
 
 
         // from the QByteArray varibable, it is split based on commas and then assigned to each string based on the index within the array
-         startingCity = distancesLine.split(',').at(0);
-         endingCity   = distancesLine.split(',').at(1);
-         distance     = distancesLine.split(',').at(2);
+        startingCity = distancesLine.split(',').at(0);
+        endingCity   = distancesLine.split(',').at(1);
+        distance     = distancesLine.split(',').at(2);
 
-          // the line read from the csv file is read and stored inside a distancesLine
-          distancesLine = distancesFile.readLine();
+        // the line read from the csv file is read and stored inside a distancesLine
+        distancesLine = distancesFile.readLine();
 
-         query.prepare("INSERT INTO Distances(Starting, Ending, Distance) VALUES (:val1, :val2, :val3);");
-         query.bindValue(":val1", startingCity);
-         query.bindValue(":val2", endingCity);
-         query.bindValue(":val3", distance);
-         query.exec();
+        query.prepare("INSERT INTO Distances(Starting, Ending, Distance) VALUES (:val1, :val2, :val3);");
+        query.bindValue(":val1", startingCity);
+        query.bindValue(":val2", endingCity);
+        query.bindValue(":val3", distance);
+        query.exec();
 
 
-         /*
+        /*
           * The following lines of code are for creating a list of the cities that are within the file.
           * Checking first if the vector to hold the cities is empty. Then running a foor loop & iterating through
           * the vector to check if the starting cities name is already inside the vector. If found, the boolean
@@ -190,7 +216,7 @@ void DbManager::initDataBase()
           * the city into the cities vector. Finally the boolean variable 'check' is re-assigned to false for the next run.
           */
 
-         // if the vector for cities is empty (meaning no city is in it) then push the city into the citises vector
+        // if the vector for cities is empty (meaning no city is in it) then push the city into the citises vector
         if(cities.empty())
             cities.push_back(startingCity);
 
@@ -215,15 +241,15 @@ void DbManager::initDataBase()
     if(distancesFile.atEnd())
     {
         // from the QByteArray varibable, it is split based on commas and then assigned to each string based on the index within the array
-         startingCity = distancesLine.split(',').at(0);
-         endingCity   = distancesLine.split(',').at(1);
-         distance     = distancesLine.split(',').at(2);
+        startingCity = distancesLine.split(',').at(0);
+        endingCity   = distancesLine.split(',').at(1);
+        distance     = distancesLine.split(',').at(2);
 
-         query.prepare("INSERT INTO Distances(Starting, Ending, Distance) VALUES (:val1, :val2, :val3);");
-         query.bindValue(":val1", startingCity);
-         query.bindValue(":val2", endingCity);
-         query.bindValue(":val3", distance);
-         query.exec();
+        query.prepare("INSERT INTO Distances(Starting, Ending, Distance) VALUES (:val1, :val2, :val3);");
+        query.bindValue(":val1", startingCity);
+        query.bindValue(":val2", endingCity);
+        query.bindValue(":val3", distance);
+        query.exec();
     }
 
 
@@ -237,136 +263,161 @@ void DbManager::initDataBase()
 
 }
 
- QVector<QString> DbManager::getCities()
+QVector<QString> DbManager::getCities()
 {
-   QVector<QString> cities;
-   QSqlQuery query;
-   query.prepare("SELECT City FROM Cities");
+    QVector<QString> cities;
+    QSqlQuery query;
+    query.prepare("SELECT City FROM Cities");
 
-   if(query.exec())
-   {
-       while(query.next())
-       {
-           QString newEuropeanCity;
-           newEuropeanCity = query.value(0).toString();
-           cities.push_back(newEuropeanCity);
-       }
-   }
-   else
-       qDebug() << "query didnt execute inside getCities()";
+    if(query.exec())
+    {
+        while(query.next())
+        {
+            QString newEuropeanCity;
+            newEuropeanCity = query.value(0).toString();
+            cities.push_back(newEuropeanCity);
+        }
+    }
+    else
+        qDebug() << "query didnt execute inside getCities()";
 
-   return cities;
+    return cities;
 
 
 }
 
- QVector<TraditionalFoodItems> DbManager::getMenuItems(const QString& city)
- {
-     QVector<TraditionalFoodItems> menuItems;
-     QSqlQuery query;
-     query.prepare("SELECT Item, Cost FROM Items WHERE City=(:val1)");
-     query.bindValue(":val1", city);
+QVector<TraditionalFoodItems> DbManager::getMenuItems(const QString& city)
+{
+    QVector<TraditionalFoodItems> menuItems;
+    QSqlQuery query;
+    query.prepare("SELECT Item, Cost FROM Items WHERE City=(:val1)");
+    query.bindValue(":val1", city);
 
-     if(query.exec())
-     {
-         while(query.next())
-         {
-             TraditionalFoodItems item;
-             item.name = query.value(0).toString();
-             item.price = query.value(1).toFloat();
+    if(query.exec())
+    {
+        while(query.next())
+        {
+            TraditionalFoodItems item;
+            item.name = query.value(0).toString();
+            item.price = query.value(1).toDouble();
             menuItems.push_back(item);
-         }
-     }
-     else
-         qDebug() << "query didnt execute inside getCities()";
+        }
+    }
+    else
+        qDebug() << "query didnt execute inside getCities()";
 
 
-     return menuItems;
- }
+    return menuItems;
+}
 
 
- float DbManager::getDistanceInbetween(const QString & starting, const QString & ending)
- {
-     float distance = 0;
-     QSqlQuery query;
-     query.prepare("SELECT Distance FROM Distances WHERE Starting=(:val1) AND Ending=(:val2)");
-     query.bindValue(":val1", starting);
-     query.bindValue(":val2", ending);
+float DbManager::getDistanceInbetween(const QString & starting, const QString & ending)
+{
+    float distance = 0;
+    QSqlQuery query;
+    query.prepare("SELECT Distance FROM Distances WHERE Starting=(:val1) AND Ending=(:val2)");
+    query.bindValue(":val1", starting);
+    query.bindValue(":val2", ending);
 
-     if(query.exec())
-     {
+    if(query.exec())
+    {
         if(query.first())
-             distance = query.value(0).toFloat();
-     }
-     else
-         qDebug() << "query didnt execute:";
+            distance = query.value(0).toFloat();
+    }
+    else
+        qDebug() << "query didnt execute:";
 
 
-     return distance;
+    return distance;
 
- }
+}
 
- bool DbManager::itemExist(const QString & city, const QString & item)
- {
-     QSqlQuery query;
-     query.prepare("SELECT City, Item FROM Items WHERE City=(:val1) AND Item=(:val2)");
-     query.bindValue(":val1", city);
-     query.bindValue(":val2", item);
+bool DbManager::itemExist(const QString & city, const QString & item)
+{
+    QSqlQuery query;
+    query.prepare("SELECT City, Item FROM Items WHERE City=(:val1) AND Item=(:val2)");
+    query.bindValue(":val1", city);
+    query.bindValue(":val2", item);
 
-     if(query.exec())
-     {
+    if(query.exec())
+    {
         if(query.first())
         {
             return true;
         }
         else
             return false;
-     }
-     else
-         return false;
- }
+    }
+    else
+        return false;
+}
 
 
- void DbManager::addItem(const QString& city, const QString& item, const double & price)
- {
-
- }
-
- void DbManager::deleteItem(const QString& city, const QString& item)
- {
-     QSqlQuery query;
-     query.prepare("DELETE FROM Items WHERE City=(:val1) AND Item=(:val2)");
-     query.bindValue(":val1", city);
-     query.bindValue(":val2", item);
-    if( query.exec())
+void DbManager::deleteItem(const QString & city, const QString & item)
+{
+    QSqlQuery query;
+    query.prepare("DELETE FROM Items WHERE City=(:val1) AND Item=(:val2);");
+    query.bindValue(":val1", city);
+    query.bindValue(":val2", item);
+    if(query.exec())
     {
-        qDebug() << "item is deleted";
+       qDebug() << "item" << item << "deleted from " << city ;
+    }
+    else
+       qDebug() << "item was not able to be deleted";
+}
+
+void DbManager::addItem(const QString & city, const QString & item, const double & price)
+{
+    QSqlQuery query;
+    query.prepare("INSERT INTO Items(City, Item, Cost) VALUES (:val1, :val2, :val3);");
+    query.bindValue(":val1", city);
+    query.bindValue(":val2", item);
+    query.bindValue(":val3", price);
+    if(query.exec())
+    {
+
+        qDebug() << "New items added: " << endl
+                 << "newCity: " << city << endl
+                 << "item: " << item << endl
+                 << "price: " << price;
+    }
+    else
+       qDebug() << "item was not able to be deleted";
+
+}
+
+
+void DbManager::addEuropeanCity(const QString & city)
+{
+    QSqlQuery query;
+    query.prepare("INSERT INTO Cities(City) VALUES (:val1);");
+    query.bindValue(":val1", city);
+    if(query.exec())
+    {
+        qDebug() << city << "has been added";
     }
     else
     {
-        qDebug() << "not deleted";
+        qDebug() << "could not add the city";
     }
+}
 
- }
 
 void DbManager::readInTxtFile()
 {
 
-        QString city = "Amsterdam";
-        QSqlQuery query;
-        query.prepare("SELECT Ending, Distance from Distances WHERE Starting=(:val1)");
-        query.bindValue(":val1", city);
-        query.exec();
+    QString city = "Amsterdam";
+    QSqlQuery query;
+    query.prepare("SELECT Ending, Distance from Distances WHERE Starting=(:val1);");
+    query.bindValue(":val1", city);
+    query.exec();
 
-        while (query.next())
-        {
-            QString ending = query.value(0).toString();
-            QString distance = query.value(1).toString();
-            qDebug() << "ending: " << ending << endl
-                     << "distnace: " << distance << endl;
-         }
-
-
-
-
+    while (query.next())
+    {
+        QString ending = query.value(0).toString();
+        QString distance = query.value(1).toString();
+        qDebug() << "ending: " << ending << endl
+                 << "distnace: " << distance << endl;
+    }
 }

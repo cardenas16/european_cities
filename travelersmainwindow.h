@@ -14,7 +14,6 @@
 #include "dbmanager.h"
 #include <QStringList>
 #include <QLineEdit>
-#include <QtWidgets>
 
 // 'stackedPages' and 'buttonPages' represent the stackedWidget pages
 // By creating an enum for them, indexes are easier to follow and use in function definitions
@@ -40,7 +39,6 @@ private slots:
    void on_pb_NextCity_clicked();
    void on_pb_back_clicked();
    void openAdminWindow();
-   void openTripOperationsWindow();
    void on_makeCustomTripButton_clicked();
    void on_confirmChoicesButton_clicked();
    void on_errorButton_clicked();
@@ -56,6 +54,7 @@ private:
     QString startingLocation;
     QListWidget *citySelectionWidget;
     int currentStep;
+    QVector<City> currentTrip;
 
     bool vectorContains(const QVector<QString>&, const QString);
     QVector<QString> getSelectedCities(bool initialCityOnly = false);
