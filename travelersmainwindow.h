@@ -1,3 +1,4 @@
+#pragma once
 #ifndef TRAVELERSMAINWINDOW_H
 #define TRAVELERSMAINWINDOW_H
 
@@ -32,9 +33,7 @@ class TravelersMainWindow : public QMainWindow
 public:
     explicit TravelersMainWindow(QWidget *parent = nullptr);
     ~TravelersMainWindow();
-
     void populateDisplay();
-
 
 private slots:
    void selectedCity();
@@ -45,10 +44,9 @@ private slots:
    void on_makeCustomTripButton_clicked();
    void on_confirmChoicesButton_clicked();
    void on_errorButton_clicked();
-
    void on_takeLondonTripButton_clicked();
-
    void on_visitInitialCities_clicked();
+   void on_confirmGeneratedTripButton_clicked();
 
 private:
     Ui::TravelersMainWindow *ui;

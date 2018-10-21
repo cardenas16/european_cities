@@ -16,6 +16,7 @@ TravelersMainWindow::TravelersMainWindow(QWidget *parent) :
     //    DbManager::getInstance()->readInTxtFile();
 
     connect(ui->actionAdmin_Login, SIGNAL(triggered(bool)),this, SLOT(openAdminWindow()));
+
     startingLocation = "NULL";
     citySelectionWidget = nullptr;
     ui->stackedWidget->setCurrentIndex(DisplayCities);
@@ -543,4 +544,11 @@ void TravelersMainWindow::on_visitInitialCities_clicked()
         ui->completedTrip->addItem(QString::number(i + 1) + ": " + initialCitiesTrip[i].getName());
 
     ui->stackedWidget->setCurrentIndex(GeneratedTrip);
+}
+
+void TravelersMainWindow::on_confirmGeneratedTripButton_clicked()
+{
+    hide();
+    tripOperations = new Trip(this);
+    tripOperations->show();
 }
