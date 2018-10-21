@@ -7,7 +7,6 @@
 #include <QDoubleSpinBox>
 #include <QTableView>
 #include <QLineEdit>
-//#include <QValidator>
 #include <QRegExpValidator>
 
 #include <QDebug>
@@ -20,25 +19,13 @@ customDelegate::customDelegate(QObject *parent) : QItemDelegate(parent)
 
 QWidget *customDelegate::createEditor(QWidget * parent, const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
-    //    QLineEdit *editor = new QLineEdit(parent);
-    //    QIntValidator *val = new QIntValidator(editor);
+    //^([A-Z]\\d{0}[a-z]*-?)+( [A-Z]\\d{0}[a-z]*)* *$
 
-    //    val->setRange(0, 255);
-    //    editor->setValidator(val);
+    // ^([A-Z]\\d{0}[a-z]*-? )+([A-Z]\\d{0}[a-z]*) *$ // works fine
 
 
-
-//    QLineEdit * editor = new QLineEdit(parent);
-////        editor->setValidator(new QValidator);
-//    return editor;
-
-
-//
-
-
-    //^([A-Z]\\d{0}[a-z]* )+([A-Z]\\d{0}[a-z]*) *$
-
-    QRegExp rx("^([A-Z]\\d{0}[a-z]*-?)+( [A-Z]\\d{0}[a-z]*)* *$" );
+    //
+    QRegExp rx("^([A-Z]\\d{0}[a-z]*-?[a-z]* )+([A-Z]\\d{0}[a-z]*) *$" );
     QValidator *validator = new QRegExpValidator(rx, parent);
 
     QLineEdit *editor = new QLineEdit(parent);
@@ -47,7 +34,8 @@ QWidget *customDelegate::createEditor(QWidget * parent, const QStyleOptionViewIt
 
 
     editor->setValidator(validator);
-     return editor;
+    return editor;
+
 
 }
 
@@ -55,20 +43,12 @@ QWidget *customDelegate::createEditor(QWidget * parent, const QStyleOptionViewIt
 void customDelegate::setEditorData(QWidget * editor, const QModelIndex & index) const
 {
 
-    //    double value = (index.model()->data(index,Qt::EditRole)).toDouble();
-
-    //    QDoubleSpinBox * spinbox = static_cast<QDoubleSpinBox*>(editor);
-    //    spinbox->setValue(value);
-
     QString value = index.model()->data(index, Qt::EditRole).toString();
     QLineEdit * line = static_cast<QLineEdit*>(editor);
     value = value.trimmed();
 
 
     line->setText(value);
-
-
-
 
 
 }
@@ -84,12 +64,15 @@ void customDelegate::setModelData(QWidget * editor, QAbstractItemModel * model, 
 
 
 
+
     QLineEdit *line = static_cast<QLineEdit*>(editor);
     QString value = line->text();
-     value = value.trimmed();
+    value = value.trimmed();
 
 
     model->setData(index, value);
+
+
 
 
 
@@ -108,48 +91,39 @@ void customDelegate::updateEditorGeometry(QWidget * editor, const QStyleOptionVi
 
 //void customDelegate::closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint)
 //{
-//    QTableView::closeEditor(editor, hint);
-//    QTableView::closeEditor(nullptr, QAbstractItemDelegate::EditNextItem);
+//    emit closeEditor(editor, hint);
+//    emit closeEditor(nullptr, QAbstractItemDelegate::EditNextItem);
 //}
 
 
-//bool customDelegate::eventFilter(QObject *editor, QEvent* event)
-//{
-//    if (event->type()==QEvent::KeyPress)
-//    {
+bool customDelegate::eventFilter(QObject *editor, QEvent* event)
+{
+    if (event->type()==QEvent::KeyPress)
+    {
+        QKeyEvent* key = static_cast<QKeyEvent*>(event);
+        if (key->key()==Qt::Key_Tab || key->key()==Qt::Key_Enter || key->key()==Qt::Key_Return )
+        {
 
-//        QKeyEvent* key = static_cast<QKeyEvent*>(event);
-//        if (key->key()==Qt::Key_Tab || key->key()==Qt::Key_Enter || key->key()==Qt::Key_Return)
-//        {
 
+            QLineEdit *line = static_cast<QLineEdit*>(editor);
+            QString value = line->text();
+            value = value.trimmed();
 
-//            //                   QWidget * edit = qobject_cast<QWidget*>(editor);
+            emit commitData(line);
+            emit closeEditor(line, QStyledItemDelegate::NoHint);
 
-//            //                   emit commitData(edit);
-//            //                   emit closeEditor(edit, QStyledItemDelegate::NoHint);
+            return false;
 
-//            return false;
+        }
 
-//        }
-//        else
-//        {
-//            return QObject::eventFilter(editor, event);
-//        }
-//        return false;
-//    }
-//    else
-//    {
-//        return QObject::eventFilter(editor, event);
-//    }
-//    return false;
+    }
+    else
+    {
+        return QObject::eventFilter(editor, event);
+    }
+    return false;
 
 
 
-
-
-
-
-
-
-//}
+}
 

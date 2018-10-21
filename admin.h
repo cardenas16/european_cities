@@ -9,9 +9,11 @@
 #include <QSqlRecord>
 #include <QMessageBox>
 
+
 #include "dbmanager.h"
 #include "spinbox.h"
 #include "customdelegate.h"
+
 
 
 
@@ -28,33 +30,58 @@ public:
     explicit Admin(QWidget *parent = nullptr);
     ~Admin();
 
+    void initialTableDisplay();
+
 
 private slots:
+    // once clicked on, it validates the usersname and password
     void on_loginButton_clicked();
 
     void setTableView(int index);
 
-    void onTableClicked(const QModelIndex &index);
+    void cellClicked(const QModelIndex &index);
 
-    void test(QModelIndex index);
+    void newItemValidation(QModelIndex index);
 
 
     void on_addItemButton_clicked();
 
-    void resetNewRow();
+
+    void saveChanges();
+
+
+
+    void on_deleteButton_clicked();
+
+    void on_newCityButton_clicked();
+
+
+    void on_backButton_newCity_clicked();
+
+
+
+    void on_saveButton_newCity_clicked();
 
 private:
     Ui::Admin *ui;
     QSqlTableModel * tableModel;
+
     QStringListModel * citiesModel;
 
-    SpinBox * mySpinBox;
+    SpinBox * newPriceDelegate;
 
-    customDelegate * myDelegate;
+    customDelegate * newItemDelegate;
+
+    QModelIndex highlightedCell;
 
 
     bool newRow;
 
+    QVector<QString> cities;
+
+
+     QStringList citiesList;
+    int comboBoxIndex;
 
 
 

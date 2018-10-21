@@ -355,17 +355,63 @@ bool DbManager::itemExist(const QString & city, const QString & item)
 }
 
 
-void DbManager::addItem(const QString& city, const QString& item, const double & price)
+void DbManager::deleteItem(const QString & city, const QString & item)
 {
+    QSqlQuery query;
+    query.prepare("DELETE FROM Items WHERE City=(:val1) AND Item=(:val2);");
+    query.bindValue(":val1", city);
+    query.bindValue(":val2", item);
+    if(query.exec())
+    {
+       qDebug() << "item" << item << "deleted from " << city ;
+    }
+    else
+       qDebug() << "item was not able to be deleted";
+}
+
+void DbManager::addItem(const QString & city, const QString & item, const double & price)
+{
+    QSqlQuery query;
+    query.prepare("INSERT INTO Items(City, Item, Cost) VALUES (:val1, :val2, :val3);");
+    query.bindValue(":val1", city);
+    query.bindValue(":val2", item);
+    query.bindValue(":val3", price);
+    if(query.exec())
+    {
+
+        qDebug() << "New items added: " << endl
+                 << "newCity: " << city << endl
+                 << "item: " << item << endl
+                 << "price: " << price;
+    }
+    else
+       qDebug() << "item was not able to be deleted";
 
 }
+
+
+void DbManager::addEuropeanCity(const QString & city)
+{
+    QSqlQuery query;
+    query.prepare("INSERT INTO Cities(City) VALUES (:val1);");
+    query.bindValue(":val1", city);
+    if(query.exec())
+    {
+        qDebug() << city << "has been added";
+    }
+    else
+    {
+        qDebug() << "could not add the city";
+    }
+}
+
 
 void DbManager::readInTxtFile()
 {
 
     QString city = "Amsterdam";
     QSqlQuery query;
-    query.prepare("SELECT Ending, Distance from Distances WHERE Starting=(:val1)");
+    query.prepare("SELECT Ending, Distance from Distances WHERE Starting=(:val1);");
     query.bindValue(":val1", city);
     query.exec();
 

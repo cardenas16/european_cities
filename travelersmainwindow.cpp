@@ -24,6 +24,7 @@ TravelersMainWindow::TravelersMainWindow(QWidget *parent) :
     //    DbManager::getInstance()->readInTxtFile();
 
     connect(ui->actionAdmin_Login, SIGNAL(triggered(bool)),this, SLOT(openAdminWindow()));
+
 }
 
 
@@ -219,8 +220,12 @@ void TravelersMainWindow::on_pb_back_clicked()
 
 void TravelersMainWindow::on_pushButton_3_clicked()
 {
-    qDebug() << "hello";
+    qDebug() << "admin has logged out";
     adminWindow->close();
     show();
+
+
+
+
 }
 

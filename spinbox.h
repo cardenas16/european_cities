@@ -8,7 +8,6 @@
 #include <QObject>
 
 
-
 class SpinBox : public QItemDelegate
 {
     Q_OBJECT

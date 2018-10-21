@@ -26,8 +26,6 @@ SOURCES += \
         main.cpp \
         travelersmainwindow.cpp \
     dbmanager.cpp \
-    trip.cpp \
-    test.cpp \
     admin.cpp \
     customdelegate.cpp \
     spinbox.cpp
@@ -36,16 +34,12 @@ HEADERS += \
         travelersmainwindow.h \
     dbmanager.h \
     city.h \
-    trip.h \
-    test.h \
     admin.h \
     customdelegate.h \
     spinbox.h
 
 FORMS += \
         travelersmainwindow.ui \
-    trip.ui \
-    test.ui \
     admin.ui
 
 # Default rules for deployment.

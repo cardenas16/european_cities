@@ -10,8 +10,9 @@
 
 
 #include "admin.h"
-#include "trip.h"
-#include "test.h"
+
+
+
 
 
 
@@ -45,8 +46,7 @@ private slots:
 private:
     Ui::TravelersMainWindow *ui;
     Admin * adminWindow;
-    Trip * tripOperations;
-    test * testWindow;
+
     QDialog * myDialog;
 };
 

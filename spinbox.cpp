@@ -64,26 +64,26 @@ bool SpinBox::eventFilter(QObject *editor, QEvent* event)
                QKeyEvent* key = static_cast<QKeyEvent*>(event);
                if (key->key()==Qt::Key_Tab || key->key()==Qt::Key_Enter || key->key()==Qt::Key_Return)
                {
-    //               QLineEdit *editor=qobject_cast<QLineEdit*>(obj);
+
+                   QDoubleSpinBox * value = qobject_cast<QDoubleSpinBox*>(editor);
+
+                      emit commitData(value);
+                      emit closeEditor(value, QStyledItemDelegate::NoHint);
 
 
-                     qDebug() << " tab/enter/return has been hit";
-    //               emit commitData(editor);
-    //               emit closeEditor(editor, QStyledItemDelegate::NoHint);
                       return true;
+               }
 
-               }
-               else
-               {
-                   return QObject::eventFilter(editor, event);
-               }
-               return false;
            }
            else
            {
                return QObject::eventFilter(editor, event);
            }
            return false;
+
+
+
+
 
 
 
