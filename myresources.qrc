@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/resources">
+        <file>img/main_window_backgroudn.jpg</file>
+        <file>img/backButton.png</file>
+        <file>img/passport.jpg</file>
+        <file>img/travel-background.jpg</file>
+        <file>img/checkMark.png</file>
+    </qresource>
+</RCC>

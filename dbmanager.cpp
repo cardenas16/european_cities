@@ -8,8 +8,8 @@ DbManager * DbManager::controller = nullptr;
 DbManager::DbManager()
 {
     db_manager = QSqlDatabase::addDatabase("QSQLITE");
-    //db_manager.setDatabaseName("/Users/JoseCardenas/european_cities.db");
-    db_manager.setDatabaseName("C:\\Users\\Jake\\Desktop\\european_cities.db");
+    db_manager.setDatabaseName("/Users/JoseCardenas/european_cities.db");
+//    db_manager.setDatabaseName("C:\\Users\\Jake\\Desktop\\european_cities.db");
 
     if (!db_manager.open())
     {
