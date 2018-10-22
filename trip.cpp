@@ -9,6 +9,8 @@ Trip::Trip(QWidget *parent) :
     citiesDisplayWidget = nullptr;
     finalShoppingCart = nullptr;
     currentCityIndex = 0;
+    backgroundImageDisplay(currentTrip, currentCityIndex);
+    this->update();
 }
 
 Trip::Trip(QWidget *parent, QVector<City> trip) :
@@ -22,8 +24,11 @@ Trip::Trip(QWidget *parent, QVector<City> trip) :
     ui->purchaseHistory->setHorizontalHeaderLabels(HEADERS);
     ui->purchaseHistory->setEditTriggers(QAbstractItemView::NoEditTriggers);
     currentTrip = trip;
+
     cityCart.clear();
     currentCityIndex = 0;
+
+    backgroundImageDisplay(currentTrip, currentCityIndex);
 
     for (int i = 0; i < currentTrip.size(); i++)
     {
@@ -49,6 +54,7 @@ Trip::Trip(QWidget *parent, QVector<City> trip) :
         ui->shoppingButtonsLayout->addWidget(foodItem);
         cityCart.insert(menuItems[i].name, 0);
     }
+    this->update();
 }
 
 Trip::~Trip()
@@ -66,6 +72,83 @@ void Trip::deleteDynamicWidget(Type *widget)
         delete widget;
         widget = nullptr;
     }
+}
+
+
+void Trip::backgroundImageDisplay( QVector<City> currentTrip, int currentCityIndex)
+{
+
+    qDebug() << "currentTrip: " << currentTrip[currentCityIndex].getName();
+    QString cityName = currentTrip[currentCityIndex].getName();
+    QVector<QString> cities =  DbManager::getInstance()->getCities();
+    int indexOfCity = 0;
+    for( int index = 0; index < cities.size(); index++)
+    {
+        if(cities.at(index) == cityName)
+            indexOfCity = index;
+
+    }
+
+    QString path;
+
+
+
+    switch (indexOfCity) {
+    case 0:
+        path = ":/resources/img/amsterdam.jpg";
+        break;
+    case 1:
+        path = ":/resources/img/berlin.jpg";
+        break;
+    case 2:
+        path = ":/resources/img/brussels2.jpg";
+        break;
+    case 3:
+        path = ":/resources/img/budapest2.jpeg";
+        break;
+    case 4:
+        path = ":/resources/img/hamburg2.jpg";
+        break;
+    case 5:
+        path = ":/resources/img/lisbon.jpg";
+        break;
+    case 6:
+        path = ":/resources/img/london2.jpg";
+        break;
+    case 7:
+        path = ":/resources/img/madrid.jpg";
+        break;
+    case 8:
+        path = ":/resources/img/paris.jpg";
+        break;
+    case 9:
+        path = ":/resources/img/prague.jpg";
+        break;
+    case 10:
+        path = ":/resources/img/rome.jpg";
+        break;
+    case 11:
+        path = ":/resources/img/stockholm2.jpg";
+        break;
+    case 12:
+        path = ":/resources/img/vienna.jpg";
+        break;
+    default:
+        path = ":/resources/img/main_window_backgroudn.jpg";
+
+
+
+    }
+
+
+    QPixmap bkgnd(path);
+    bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
+    QPalette palette;
+    palette.setBrush(QPalette::Background, bkgnd);
+    this->setPalette(palette);
+
+    this->repaint();
+
 }
 
 void Trip::purchasedItem()
@@ -108,6 +191,9 @@ void Trip::on_nextCityButton_clicked()
     citiesDisplayWidget->item(currentCityIndex)->setBackgroundColor(QColor(255, 255, 255));
     cityCart.clear();
     currentCityIndex++;
+    backgroundImageDisplay(currentTrip, currentCityIndex);
+
+
 
     if (currentCityIndex >= currentTrip.size())
     {
@@ -118,6 +204,7 @@ void Trip::on_nextCityButton_clicked()
     citiesDisplayWidget->item(currentCityIndex)->setBackgroundColor(QColor(255, 255, 102));
     QVector<TraditionalFoodItems> menuItems = DbManager::getInstance()->getMenuItems(currentTrip[currentCityIndex].getName());
     ui->shoppingButtonsLabel->setText("Displaying Purchase Options From: " + currentTrip[currentCityIndex].getName());
+
 
     for (int i = 0; i < menuItems.size(); i++)
     {
