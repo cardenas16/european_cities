@@ -21,6 +21,7 @@ Trip::Trip(QWidget *parent, QVector<City> trip) :
     ui->purchaseHistory->setColumnCount(2);
     ui->purchaseHistory->setHorizontalHeaderLabels(HEADERS);
     ui->purchaseHistory->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->purchaseHistory->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     currentTrip = trip;
     cityCart.clear();
     currentCityIndex = 0;
@@ -142,6 +143,7 @@ void Trip::on_clearHistoryButton_clicked()
         ui->purchaseHistory->removeRow(0);
 
     ui->purchaseHistory->setHorizontalHeaderLabels(HEADERS);
+    ui->purchaseHistory->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 }
 
 bool Trip::checkForEmptyNodes(QList<QTreeWidgetItem*> items)
