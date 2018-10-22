@@ -32,6 +32,9 @@ public:
     explicit TravelersMainWindow(QWidget *parent = nullptr);
     ~TravelersMainWindow();
     void populateDisplay();
+    void methodOneTooPopluate(QVector<QString> cities);
+     void methodTwoTooPopluate(QVector<QString> cities);
+    void methodThreeTooPopluate(QVector<QString> cities);
 
 private slots:
    void selectedCity();
@@ -45,6 +48,7 @@ private slots:
    void on_takeLondonTripButton_clicked();
    void on_visitInitialCities_clicked();
    void on_confirmGeneratedTripButton_clicked();
+   void adminLoggedOut();
 
 private:
     Ui::TravelersMainWindow *ui;

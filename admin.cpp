@@ -41,7 +41,6 @@ Admin::Admin(QWidget *parent) :
     // initialized to false, because no row is add
     newRow = false;
 
-
     // spinBox delegate is initialized
     newPriceDelegate = new SpinBoxDelegate(this);
 
@@ -69,7 +68,7 @@ Admin::Admin(QWidget *parent) :
 
 
     // needs editing - check user validation
-    connect(ui->logOutButton,SIGNAL(clicked()),this->parent(),SLOT(on_pushButton_3_clicked()));
+    connect(ui->logOutButton,SIGNAL(clicked()),this->parent(),SLOT(adminLoggedOut()));
 
     // once the data is changed in the new item cell, it will call the fuction to validate if the new item is not in the db
     connect(tableModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(newItemValidation(QModelIndex)));
@@ -482,6 +481,14 @@ void Admin::on_saveButton_newCity_clicked()
     qDebug() << "newCity: " << newCity << endl
              << "item: " << item << endl
              << "price: " << price;
+}
+
+
+
+void Admin::on_button_importCities_clicked()
+{
+    ui->importCitiesStackWidget->setCurrentIndex(1);
+    DbManager::getInstance()->readNewCitiesTxtFile();
 }
 
 

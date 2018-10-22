@@ -9,6 +9,7 @@
 #include <algorithm>
 
 
+
 struct TraditionalFoodItems
 {
     QString name;
@@ -27,7 +28,7 @@ public:
     QVector<TraditionalFoodItems> getMenuItems(const QString& city);
     float getDistanceInbetween(const QString & starting, const QString & ending);
 
-    void readInTxtFile();
+    void readNewCitiesTxtFile();
     bool itemExist(const QString & city, const QString & item);
 
     void deleteItem(const QString & city, const QString & item);

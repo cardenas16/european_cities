@@ -65,6 +65,9 @@ private slots:
     void on_saveButton_newCity_clicked();
 
 
+    void on_button_importCities_clicked();
+
+
 private:
     Ui::Admin *ui;
     QSqlTableModel * tableModel;
@@ -79,6 +82,7 @@ private:
 
 
     bool newRow;
+
 
     QVector<QString> cities;
 

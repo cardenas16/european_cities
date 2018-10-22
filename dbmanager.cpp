@@ -1,5 +1,7 @@
 #include "dbmanager.h"
 
+#include <QMessageBox>
+
 DbManager * DbManager::controller = nullptr;
 
 
@@ -37,6 +39,13 @@ void DbManager::initDataBase()
     /*
      * The Following three query executions create the tables inside out database
      */
+
+    query.exec( "CREATE TABLE IF NOT EXISTS `Admin` ("
+                " `Username`             TEXT,   "
+                " `Password`             TEXT   );"
+                );
+
+
     query.exec( "CREATE TABLE IF NOT EXISTS `Cities` ("
                 " `City`          TEXT, "
                 " `TotalPurchase` INT );"
@@ -363,10 +372,10 @@ void DbManager::deleteItem(const QString & city, const QString & item)
     query.bindValue(":val2", item);
     if(query.exec())
     {
-       qDebug() << "item" << item << "deleted from " << city ;
+        qDebug() << "item" << item << "deleted from " << city ;
     }
     else
-       qDebug() << "item was not able to be deleted";
+        qDebug() << "item was not able to be deleted";
 }
 
 void DbManager::addItem(const QString & city, const QString & item, const double & price)
@@ -385,7 +394,7 @@ void DbManager::addItem(const QString & city, const QString & item, const double
                  << "price: " << price;
     }
     else
-       qDebug() << "item was not able to be deleted";
+        qDebug() << "item was not able to be deleted";
 
 }
 
@@ -406,22 +415,177 @@ void DbManager::addEuropeanCity(const QString & city)
 }
 
 
-void DbManager::readInTxtFile()
+void DbManager::readNewCitiesTxtFile()
 {
 
-    QString city = "Amsterdam";
     QSqlQuery query;
-    query.prepare("SELECT Ending, Distance from Distances WHERE Starting=(:val1);");
-    query.bindValue(":val1", city);
-    query.exec();
 
-    while (query.next())
+    // the file for reading in the items is initialized
+    QFile newdDistancesFile("/Users/JoseCardenas/Desktop/E/New Cities-Table 1.csv");
+
+    if (!newdDistancesFile.open(QIODevice::ReadOnly))
+        qDebug() << newdDistancesFile.errorString();
+
+
+    // the header of the distance file is read, so these values are not stored in the db
+    newdDistancesFile.readLine();
+
+    // the next line read in stored inside a QByteArray variable
+    QByteArray  distancesLine = newdDistancesFile.readLine();
+
+    // qstring of cities is initialized with the current cities inside the database
+    QVector<QString> cities = getCities();
+    QString startingCity; // the starting location
+    QString endingCity;  //  the ending location
+    QString distance;   // distance from one city to another
+    bool check = false;
+    bool distanceExists = false;
+
+
+
+
+
+    while(!newdDistancesFile.atEnd())
     {
-        QString ending = query.value(0).toString();
-        QString distance = query.value(1).toString();
-        qDebug() << "ending: " << ending << endl
-                 << "distnace: " << distance << endl;
+        // from the QByteArray varibable, it is split based on commas and then assigned to each string based on the index within the array
+        startingCity = distancesLine.split(',').at(0);
+        endingCity   = distancesLine.split(',').at(1);
+        distance     = distancesLine.split(',').at(2);
+
+        query.prepare("SELECT Starting, Ending FROM Distances WHERE Starting=(:val1) AND Ending=(:val2) ");
+        query.bindValue(":val1", startingCity);
+        query.bindValue(":val2", endingCity);
+
+        if(query.exec())
+        {
+            if(query.first())
+                distanceExists =  true;
+            else
+                 distanceExists =  false;
+        }
+        else
+            distanceExists = false;
+
+        // the line read from the csv file is read and stored inside a distancesLine
+        distancesLine = newdDistancesFile.readLine();
+
+        // if - the distance doesnt exist in the database proceed forward
+        if(!distanceExists)
+        {
+
+            query.prepare("INSERT INTO Distances(Starting, Ending, Distance) VALUES (:val1, :val2, :val3);");
+            query.bindValue(":val1", startingCity);
+            query.bindValue(":val2", endingCity);
+            query.bindValue(":val3", distance);
+            query.exec();
+
+            /*
+              * The following lines of code are for creating a list of the cities that are within the file.
+              * Checking first if the vector to hold the cities is empty. Then running a foor loop & iterating through
+              * the vector to check if the starting cities name is already inside the vector. If found, the boolean
+              * variable 'check' is assigned to true. But if its not found then in the last if statement it will push back
+              * the city into the cities vector. Finally the boolean variable 'check' is re-assigned to false for the next run.
+              */
+
+            // if the vector for cities is empty (meaning no city is in it) then push the city into the citises vector
+            if(cities.empty())
+                cities.push_back(startingCity);
+
+            // const run time - checks the whole vector if an element(city) exists that with the same name
+            for(QVector<QString>::iterator it = cities.begin(); it != cities.end(); it++)
+                if(*it == startingCity)
+                     check = true; // check becomes true if there is a city with same name
+
+            // if an element is not found then it is pushed back into the vector and the city is inserted into the database
+            if(!check)
+            {
+                cities.push_back(startingCity);
+                query.prepare("INSERT INTO Cities(City) VALUES (:val1);");
+                query.bindValue(":val1", startingCity);
+                query.exec();
+
+            }
+
+            check = false;
+        }
+
     }
+
+    // since the while loop exits out when the file is at the last line, theres still an element on the last line that doesnt get
+    // inserted to the database
+    if(newdDistancesFile.atEnd())
+    {
+        // from the QByteArray varibable, it is split based on commas and then assigned to each string based on the index within the array
+        startingCity = distancesLine.split(',').at(0);
+        endingCity   = distancesLine.split(',').at(1);
+        distance     = distancesLine.split(',').at(2);
+
+        query.prepare("SELECT Starting, Ending FROM Distances WHERE Starting=(:val1) AND Ending=(:val2) ");
+        query.bindValue(":val1", startingCity);
+        query.bindValue(":val2", endingCity);
+
+        if(query.exec())
+        {
+            if(query.first())
+                distanceExists =  true;
+            else
+                 distanceExists =  false;
+        }
+        else
+            distanceExists = false;
+
+        // if - the distance doesnt exist in the database proceed forward
+        if(!distanceExists)
+        {
+
+            query.prepare("INSERT INTO Distances(Starting, Ending, Distance) VALUES (:val1, :val2, :val3);");
+            query.bindValue(":val1", startingCity);
+            query.bindValue(":val2", endingCity);
+            query.bindValue(":val3", distance);
+            query.exec();
+
+            /*
+              * The following lines of code are for creating a list of the cities that are within the file.
+              * Checking first if the vector to hold the cities is empty. Then running a foor loop & iterating through
+              * the vector to check if the starting cities name is already inside the vector. If found, the boolean
+              * variable 'check' is assigned to true. But if its not found then in the last if statement it will push back
+              * the city into the cities vector. Finally the boolean variable 'check' is re-assigned to false for the next run.
+              */
+
+            // if the vector for cities is empty (meaning no city is in it) then push the city into the citises vector
+            if(cities.empty())
+                cities.push_back(startingCity);
+
+            // const run time - checks the whole vector if an element(city) exists that with the same name
+            for(QVector<QString>::iterator it = cities.begin(); it != cities.end(); it++)
+                if(*it == startingCity)
+                     check = true; // check becomes true if there is a city with same name
+
+            // if an element is not found then it is pushed back into the vector and the city is inserted into the database
+            if(!check)
+            {
+                cities.push_back(startingCity);
+                query.prepare("INSERT INTO Cities(City) VALUES (:val1);");
+                query.bindValue(":val1", startingCity);
+                query.exec();
+
+            }
+
+            check = false;
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+
+
 
 
 

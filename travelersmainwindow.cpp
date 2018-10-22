@@ -8,12 +8,27 @@ TravelersMainWindow::TravelersMainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+
+
+//centralWidget()->setStyleSheet("background-image: url(/Users/JoseCardenas/Desktop/RETIREES1015-family-travel-plans.jpg);");
+
+//setStyleSheet("background-image: url(/Users/JoseCardenas/Desktop/RETIREES1015-family-travel-plans.jpg);");
+//    QPixmap bkgnd("/Users/JoseCardenas/Desktop/RETIREES1015-family-travel-plans.jpg");
+
+//    bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
+//    QPalette palette;
+//    palette.setBrush(QPalette::Background, bkgnd);
+
+//    this->setPalette(palette);
+
+    //    DbManager::getInstance()->initDataBase();
+
+    ui->stackedWidget->setCurrentIndex(0);
+    //    ui->gridLayout_cities->
+
     populateDisplay();
 
 
-    //        DbManager::getInstance()->getCities();
-    //        DbManager::getInstance()->initDataBase();
-    //    DbManager::getInstance()->readInTxtFile();
 
     connect(ui->actionAdmin_Login, SIGNAL(triggered(bool)),this, SLOT(openAdminWindow()));
 
@@ -42,14 +57,32 @@ void TravelersMainWindow::populateDisplay()
     QVector<QString> cities = DbManager::getInstance()->getCities();
 
 
+
+    if(cities.size() <= 11)
+        methodOneTooPopluate(cities);
+    else if (cities.size() > 11 && cities.size() <= 20)
+        methodTwoTooPopluate(cities);
+    else
+        methodThreeTooPopluate(cities);
+
+
+}
+
+
+
+
+void TravelersMainWindow::methodOneTooPopluate(QVector<QString> cities)
+{
+
     int row = 0;
     int col = 0;
+
+
 
     for(int index = 0; index < cities.size(); index++)
     {
         // a call to the db manager to get the distance betweem two cities, passes the starting ctiy name and then the ending city name
         float distanceToBerlin = DbManager::getInstance()->getDistanceInbetween(cities[index], "Berlin");
-
 
         // creates a new push button, the button is displayed with the name of the city and the distance to berlin
         QPushButton* cityName = new QPushButton(cities[index]+ "\nDistance to Berlin: " + QString::number(distanceToBerlin) ,this);
@@ -73,11 +106,93 @@ void TravelersMainWindow::populateDisplay()
         row++;
 
     }
-
-
-
 }
 
+void TravelersMainWindow::methodTwoTooPopluate(QVector<QString> cities)
+{
+    int row = 0;
+    int col = 0;
+
+
+
+    for(int index = 0; index < cities.size(); index++)
+    {
+
+        if(col == 2)
+        {
+            row++;
+            col = 0;
+        }
+
+        // a call to the db manager to get the distance betweem two cities, passes the starting ctiy name and then the ending city name
+        float distanceToBerlin = DbManager::getInstance()->getDistanceInbetween(cities[index], "Berlin");
+
+        // creates a new push button, the button is displayed with the name of the city and the distance to berlin
+        QPushButton* cityName = new QPushButton(cities[index]+ "\nDistance to Berlin: " + QString::number(distanceToBerlin) ,this);
+
+        // sets the name of the object, this will be used as a parameter in the next line
+        cityName->setObjectName(cities[index]);
+
+        // passes the name of the city, SIGNAL-> once clicked, passes this, then passes the function to call once clicked
+        connect(cityName, SIGNAL(clicked()), this, SLOT(selectedCity()));
+
+
+        cityName->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+
+        // addeds the widget to main window, by name, row, and col. COl is always set to zero so it shows it vertically
+        ui->gridLayout_cities->addWidget(cityName, row, col);
+
+        // spaces out the buttons
+        ui->gridLayout_cities->setSpacing(15);
+
+        // incremens the col count
+        col++;
+
+    }
+}
+
+void TravelersMainWindow::methodThreeTooPopluate(QVector<QString> cities)
+{
+    int row = 0;
+    int col = 0;
+
+
+
+    for(int index = 0; index < cities.size(); index++)
+    {
+
+        if(col == 3)
+        {
+            row++;
+            col = 0;
+        }
+
+        // a call to the db manager to get the distance betweem two cities, passes the starting ctiy name and then the ending city name
+        float distanceToBerlin = DbManager::getInstance()->getDistanceInbetween(cities[index], "Berlin");
+
+        // creates a new push button, the button is displayed with the name of the city and the distance to berlin
+        QPushButton* cityName = new QPushButton(cities[index]+ "\nDistance to Berlin: " + QString::number(distanceToBerlin) ,this);
+
+        // sets the name of the object, this will be used as a parameter in the next line
+        cityName->setObjectName(cities[index]);
+
+        // passes the name of the city, SIGNAL-> once clicked, passes this, then passes the function to call once clicked
+        connect(cityName, SIGNAL(clicked()), this, SLOT(selectedCity()));
+
+
+        cityName->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+
+        // addeds the widget to main window, by name, row, and col. COl is always set to zero so it shows it vertically
+        ui->gridLayout_cities->addWidget(cityName, row, col);
+
+        // spaces out the buttons
+        ui->gridLayout_cities->setSpacing(15);
+
+        // incremens the col count
+        col++;
+
+    }
+}
 
 // SLOT - this function will be called when the traveler presses a button of a certain city. It will move to index 1 of the stacked widget
 //        to display the current items the city holds
@@ -180,7 +295,7 @@ void TravelersMainWindow::on_pb_NextCity_clicked()
     // for loop - displays the items inside menuItems vector
     for(int index = 0; index < menuItems.size(); index++)
     {
-         // creates a new button that will display the name of the item
+        // creates a new button that will display the name of the item
         QPushButton * item = new QPushButton(menuItems[index].name, this);
 
         item->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
@@ -206,14 +321,14 @@ void TravelersMainWindow::openAdminWindow()
 // returns to index zero of the stacked widget
 void TravelersMainWindow::on_pb_back_clicked()
 {
-     ui->stackedWidget->setCurrentIndex(0);
+    ui->stackedWidget->setCurrentIndex(0);
 }
 
 void TravelersMainWindow::openTripOperationsWindow()
 {
-//    hide();
-//    tripOperations = new Trip(this);
-//    tripOperations->show();
+    //    hide();
+    //    tripOperations = new Trip(this);
+    //    tripOperations->show();
 }
 
 
@@ -548,7 +663,16 @@ void TravelersMainWindow::on_visitInitialCities_clicked()
 
 void TravelersMainWindow::on_confirmGeneratedTripButton_clicked()
 {
-//    hide();
-//    tripOperations = new Trip(this);
-//    tripOperations->show();
+    //    hide();
+    //    tripOperations = new Trip(this);
+    //    tripOperations->show();
+}
+
+
+void TravelersMainWindow::adminLoggedOut()
+{
+    qDebug() << "admin has logged out";
+    adminWindow->close();
+    show();
+
 }
