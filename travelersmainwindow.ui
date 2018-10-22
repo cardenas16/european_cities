@@ -63,7 +63,7 @@ QPushButton:hover
 </string>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="page">
      <widget class="QPushButton" name="visitInitialCities">
@@ -304,9 +304,9 @@ opacity: 0.5;</string>
      <widget class="QWidget" name="horizontalLayoutWidget_3">
       <property name="geometry">
        <rect>
-        <x>210</x>
+        <x>219</x>
         <y>171</y>
-        <width>160</width>
+        <width>151</width>
         <height>32</height>
        </rect>
       </property>
@@ -323,9 +323,9 @@ opacity: 0.5;</string>
      <widget class="QWidget" name="horizontalLayoutWidget_2">
       <property name="geometry">
        <rect>
-        <x>210</x>
+        <x>189</x>
         <y>140</y>
-        <width>160</width>
+        <width>211</width>
         <height>31</height>
        </rect>
       </property>
@@ -369,9 +369,9 @@ opacity: 0.5;</string>
      <widget class="QWidget" name="horizontalLayoutWidget_7">
       <property name="geometry">
        <rect>
-        <x>209</x>
+        <x>203</x>
         <y>340</y>
-        <width>205</width>
+        <width>191</width>
         <height>32</height>
        </rect>
       </property>
@@ -419,6 +419,58 @@ opacity: 0.5;</string>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
         <widget class="QListWidget" name="completedTrip"/>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="londonTripPage">
+     <widget class="QWidget" name="horizontalLayoutWidget_8">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>60</y>
+        <width>321</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="londonTripLabelLayout">
+       <item>
+        <widget class="QLabel" name="londonTripLabel">
+         <property name="text">
+          <string>Please Enter the Number of Cities to Visit for Your London Trip:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="horizontalLayoutWidget_9">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>90</y>
+        <width>141</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="londonTripObtainCitiesLayout">
+       <item>
+        <widget class="QLineEdit" name="obtainCitiesLineEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
