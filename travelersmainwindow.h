@@ -16,9 +16,9 @@
 
 // 'stackedPages' and 'buttonPages' represent the stackedWidget pages
 // By creating an enum for them, indexes are easier to follow and use in function definitions
-enum stackedPages { DisplayCities = 0, DisplayFoodItems, CheckableCities, ErrorPage, GeneratedTrip };
+enum stackedPages { DisplayCities = 0, DisplayFoodItems, CheckableCities, ErrorPage, GeneratedTrip, LondonTrip };
 enum buttonPages { On = 0, Off };
-enum currentStep { InitialCity = 0, AdditionalCities };
+enum currentStep { InitialCity = 0, AdditionalCities, London };
 
 namespace Ui {
 class TravelersMainWindow;
@@ -50,6 +50,10 @@ private slots:
    void on_confirmGeneratedTripButton_clicked();
    void adminLoggedOut();
 
+   void on_obtainCitiesLineEdit_editingFinished();
+
+   void on_obtainCitiesLineEdit_returnPressed();
+
 private:
     Ui::TravelersMainWindow *ui;
     Admin * adminWindow;
@@ -58,6 +62,7 @@ private:
     QString startingLocation;
     QListWidget *citySelectionWidget;
     int currentStep;
+    int upperBound;
     QVector<City> currentTrip;
 
     bool vectorContains(const QVector<QString>&, const QString);
@@ -66,6 +71,9 @@ private:
     bool contains(const QVector<City> &cities, const QString location);
     void populateSubsequentCustomTripOptions();
     void deleteCitySelectionWidget();
+    int validateNumberOfCities();
+    void processLondonTrip();
+    void generateLondonTrip(int numCities);
 };
 
 #endif // TRAVELERSMAINWINDOW_H

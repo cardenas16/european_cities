@@ -424,7 +424,8 @@ void DbManager::readNewCitiesTxtFile()
     QSqlQuery query;
 
     // the file for reading in the items is initialized
-    QFile newdDistancesFile("/Users/JoseCardenas/Desktop/E/New Cities-Table 1.csv");
+    //QFile newdDistancesFile("/Users/JoseCardenas/Desktop/E/New Cities-Table 1.csv");
+    QFile newdDistancesFile("C:\\Users\\Jake\\Desktop\\New Cities-Table 1.csv");
 
     if (!newdDistancesFile.open(QIODevice::ReadOnly))
         qDebug() << newdDistancesFile.errorString();
@@ -576,21 +577,5 @@ void DbManager::readNewCitiesTxtFile()
 
             check = false;
         }
-
-
-
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
