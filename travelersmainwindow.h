@@ -8,7 +8,7 @@
 #include <QtWidgets>
 #include <QDialog>
 #include "admin.h"
-//#include "trip.h"
+#include "trip.h"
 #include "city.h"
 #include <QStringList>
 #include <QLineEdit>
@@ -53,11 +53,12 @@ private slots:
 private:
     Ui::TravelersMainWindow *ui;
     Admin * adminWindow;
-//    Trip * tripOperations;
+    Trip * tripOperations;
     QDialog * myDialog;
     QString startingLocation;
     QListWidget *citySelectionWidget;
     int currentStep;
+    QVector<City> currentTrip;
 
     bool vectorContains(const QVector<QString>&, const QString);
     QVector<QString> getSelectedCities(bool initialCityOnly = false);

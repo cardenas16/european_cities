@@ -8,7 +8,8 @@ DbManager * DbManager::controller = nullptr;
 DbManager::DbManager()
 {
     db_manager = QSqlDatabase::addDatabase("QSQLITE");
-    db_manager.setDatabaseName("/Users/JoseCardenas/european_cities.db");
+    //db_manager.setDatabaseName("/Users/JoseCardenas/european_cities.db");
+    db_manager.setDatabaseName("C:\\Users\\Jake\\Desktop\\european_cities.db");
 
     if (!db_manager.open())
     {
@@ -76,10 +77,12 @@ void DbManager::initDataBase()
 
 
     // the file for reading in the distances is initialized
-    QFile distancesFile("/Users/JoseCardenas/Desktop/E/Distances-Table 1.csv");
+    //QFile distancesFile("/Users/JoseCardenas/Desktop/E/Distances-Table 1.csv");
+    QFile distancesFile("C:\\Users\\Jake\\Desktop\\Distances-Table 1.csv");
 
     // the file for reading in the items is initialized
-    QFile itemsFile("/Users/JoseCardenas/Desktop/E/Foods-Table 1.csv");
+    //QFile itemsFile("/Users/JoseCardenas/Desktop/E/Foods-Table 1.csv");
+    QFile itemsFile("C:\\Users\\Jake\\Desktop\\Foods-Table 1.csv");
 
 
 

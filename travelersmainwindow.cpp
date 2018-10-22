@@ -631,15 +631,15 @@ void TravelersMainWindow::on_takeLondonTripButton_clicked()
         numCities++;
     }
 
-    QVector<City> shortestLondonTrip;
-    shortestLondonTrip = nextClosest(shortestLondonTrip, numCities + 1, "London");
+    currentTrip.clear();
+    currentTrip = nextClosest(currentTrip, numCities + 1, "London");
 
     ui->completedTrip->clear();
     ui->generatedTripLabel->setText("Here's The Order For Your Shortest Trip Starting At London!");
-    ui->distanceTraveledLabel->setText("Total Distance Traveled: " + QString::number(getDistanceTraveled(shortestLondonTrip)));
+    ui->distanceTraveledLabel->setText("Total Distance Traveled: " + QString::number(getDistanceTraveled(currentTrip)));
 
-    for (int i = 0; i < shortestLondonTrip.size(); i++)
-        ui->completedTrip->addItem(QString::number(i + 1) + ": " + shortestLondonTrip[i].getName());
+    for (int i = 0; i < currentTrip.size(); i++)
+        ui->completedTrip->addItem(QString::number(i + 1) + ": " + currentTrip[i].getName());
 
     ui->stackedWidget->setCurrentIndex(GeneratedTrip);
 }
@@ -648,24 +648,24 @@ void TravelersMainWindow::on_visitInitialCities_clicked()
 {
     QVector<QString> initialElevenCities = { "Amsterdam", "Berlin", "Brussels", "Budapest", "Hamburg", "Lisbon",
                                              "London", "Madrid", "Paris", "Prague", "Rome" };
-    QVector<City> initialCitiesTrip;
-    initialCitiesTrip = modifiedNextClosest(initialCitiesTrip, initialElevenCities, "Paris");
+    currentTrip.clear();
+    currentTrip = modifiedNextClosest(currentTrip, initialElevenCities, "Paris");
 
     ui->completedTrip->clear();
     ui->generatedTripLabel->setText("Here's The Order For Your Initial Eleven Cities Trip!");
-    ui->distanceTraveledLabel->setText("Total Distance Traveled: " + QString::number(getDistanceTraveled(initialCitiesTrip)));
+    ui->distanceTraveledLabel->setText("Total Distance Traveled: " + QString::number(getDistanceTraveled(currentTrip)));
 
-    for (int i = 0; i < initialCitiesTrip.size(); i++)
-        ui->completedTrip->addItem(QString::number(i + 1) + ": " + initialCitiesTrip[i].getName());
+    for (int i = 0; i < currentTrip.size(); i++)
+        ui->completedTrip->addItem(QString::number(i + 1) + ": " + currentTrip[i].getName());
 
     ui->stackedWidget->setCurrentIndex(GeneratedTrip);
 }
 
 void TravelersMainWindow::on_confirmGeneratedTripButton_clicked()
 {
-    //    hide();
-    //    tripOperations = new Trip(this);
-    //    tripOperations->show();
+    hide();
+    tripOperations = new Trip(this, currentTrip);
+    tripOperations->show();
 }
 
 

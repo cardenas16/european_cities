@@ -31,19 +31,21 @@ SOURCES += \
     dbmanager.cpp \
     admin.cpp \
     spinboxdelegate.cpp \
-    newitemdelegate.cpp
-
+    newitemdelegate.cpp \
+    trip.cpp
 HEADERS += \
         travelersmainwindow.h \
     city.h \
     dbmanager.h \
     admin.h \
     spinboxdelegate.h \
-    newitemdelegate.h
+    newitemdelegate.h \
+    trip.h
 
 FORMS += \
         travelersmainwindow.ui \
-    admin.ui
+    admin.ui \
+    trip.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
