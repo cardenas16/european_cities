@@ -1,5 +1,6 @@
 #include "city.h"
 
+
 City::City()
 {
     cityName = "NULL";

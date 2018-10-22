@@ -2,28 +2,41 @@
 <ui version="4.0">
  <class>TravelersMainWindow</class>
  <widget class="QMainWindow" name="TravelersMainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>773</width>
-    <height>752</height>
+    <width>906</width>
+    <height>682</height>
    </rect>
+  </property>
+  <property name="baseSize">
+   <size>
+    <width>-3</width>
+    <height>0</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>TravelersMainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">QWidget{
+background-image: url(/Users/JoseCardenas/Desktop/RETIREES1015-family-travel-plans.jpg);
+
+ }
+</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>451</width>
-      <height>571</height>
+      <x>30</x>
+      <y>30</y>
+      <width>831</width>
+      <height>591</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -39,33 +52,88 @@ border-radius: 6px;
                                       stop: 0 #f6f7fa, stop: 1 #dadbde);
 min-width: 80px;
 
+
 }
 
-
- </string>
+QPushButton:hover
+{
+  background-color: #4CAF50; /* Green */
+    color: white;
+}
+</string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="page">
+     <widget class="QPushButton" name="visitInitialCities">
+      <property name="geometry">
+       <rect>
+        <x>590</x>
+        <y>150</y>
+        <width>191</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Visit the Initial 11 Cities</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="makeCustomTripButton">
+      <property name="geometry">
+       <rect>
+        <x>590</x>
+        <y>49</y>
+        <width>191</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Make Custom Trip</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="takeLondonTripButton">
+      <property name="geometry">
+       <rect>
+        <x>590</x>
+        <y>99</y>
+        <width>191</width>
+        <height>32</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Take Trip Starting London</string>
+      </property>
+     </widget>
      <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>10</y>
-        <width>361</width>
-        <height>541</height>
+        <x>0</x>
+        <y>20</y>
+        <width>571</width>
+        <height>561</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QLabel" name="label_2">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>276</height>
+          </size>
+         </property>
          <property name="styleSheet">
-          <string notr="true">text: center;
-</string>
+          <string notr="true">
+
+  font-size: 40px;
+font-style: bold;
+color: white;
+shadow:2px 2px red;
+opacity: 0.5;</string>
          </property>
          <property name="text">
-          <string>                                European Cities </string>
+          <string>European Cities </string>
          </property>
         </widget>
        </item>
@@ -76,11 +144,11 @@ min-width: 80px;
      </widget>
     </widget>
     <widget class="QWidget" name="page_2">
-     <widget class="QWidget" name="layoutWidget">
+     <widget class="QWidget" name="layoutWidget_2">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>10</y>
+        <x>60</x>
+        <y>40</y>
         <width>341</width>
         <height>311</height>
        </rect>
@@ -138,8 +206,8 @@ min-width: 80px;
      <widget class="QPushButton" name="pb_back">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>390</y>
+        <x>110</x>
+        <y>370</y>
         <width>114</width>
         <height>32</height>
        </rect>
@@ -151,8 +219,8 @@ min-width: 80px;
      <widget class="QPushButton" name="pb_NextCity">
       <property name="geometry">
        <rect>
-        <x>160</x>
-        <y>390</y>
+        <x>250</x>
+        <y>370</y>
         <width>114</width>
         <height>32</height>
        </rect>
@@ -163,22 +231,11 @@ min-width: 80px;
      </widget>
     </widget>
     <widget class="QWidget" name="makeCustomTripPage">
-     <widget class="QWidget" name="verticalLayoutWidget_2">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>371</width>
-        <height>211</height>
-       </rect>
-      </property>
-      <layout class="QVBoxLayout" name="makeCustomTripLayout"/>
-     </widget>
      <widget class="QWidget" name="horizontalLayoutWidget">
       <property name="geometry">
        <rect>
-        <x>109</x>
-        <y>240</y>
+        <x>170</x>
+        <y>300</y>
         <width>151</width>
         <height>41</height>
        </rect>
@@ -209,11 +266,22 @@ min-width: 80px;
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="verticalLayoutWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>71</x>
+        <y>90</y>
+        <width>371</width>
+        <height>211</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="makeCustomTripLayout"/>
+     </widget>
      <widget class="QWidget" name="horizontalLayoutWidget_4">
       <property name="geometry">
        <rect>
-        <x>9</x>
-        <y>0</y>
+        <x>70</x>
+        <y>60</y>
         <width>371</width>
         <height>31</height>
        </rect>
@@ -233,12 +301,31 @@ min-width: 80px;
      </widget>
     </widget>
     <widget class="QWidget" name="errorPage">
+     <widget class="QWidget" name="horizontalLayoutWidget_3">
+      <property name="geometry">
+       <rect>
+        <x>219</x>
+        <y>171</y>
+        <width>151</width>
+        <height>32</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="errorPageButtonLayout">
+       <item>
+        <widget class="QPushButton" name="errorButton">
+         <property name="text">
+          <string>Ok</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
      <widget class="QWidget" name="horizontalLayoutWidget_2">
       <property name="geometry">
        <rect>
-        <x>120</x>
-        <y>90</y>
-        <width>160</width>
+        <x>189</x>
+        <y>140</y>
+        <width>211</width>
         <height>31</height>
        </rect>
       </property>
@@ -255,47 +342,13 @@ min-width: 80px;
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="horizontalLayoutWidget_3">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>121</y>
-        <width>160</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <layout class="QHBoxLayout" name="errorPageButtonLayout">
-       <item>
-        <widget class="QPushButton" name="errorButton">
-         <property name="text">
-          <string>Ok</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
     </widget>
     <widget class="QWidget" name="generatedTripPage">
-     <widget class="QWidget" name="verticalLayoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>40</x>
-        <y>40</y>
-        <width>291</width>
-        <height>231</height>
-       </rect>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
-       <item>
-        <widget class="QListWidget" name="completedTrip"/>
-       </item>
-      </layout>
-     </widget>
      <widget class="QWidget" name="horizontalLayoutWidget_5">
       <property name="geometry">
        <rect>
-        <x>39</x>
-        <y>10</y>
+        <x>149</x>
+        <y>50</y>
         <width>291</width>
         <height>31</height>
        </rect>
@@ -313,11 +366,30 @@ min-width: 80px;
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="horizontalLayoutWidget_7">
+      <property name="geometry">
+       <rect>
+        <x>203</x>
+        <y>340</y>
+        <width>191</width>
+        <height>32</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="confirmGeneratedTripLayout">
+       <item>
+        <widget class="QPushButton" name="confirmGeneratedTripButton">
+         <property name="text">
+          <string>Continue to Item Purchase</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
      <widget class="QWidget" name="horizontalLayoutWidget_6">
       <property name="geometry">
        <rect>
-        <x>39</x>
-        <y>269</y>
+        <x>149</x>
+        <y>309</y>
         <width>291</width>
         <height>31</height>
        </rect>
@@ -335,20 +407,68 @@ min-width: 80px;
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="horizontalLayoutWidget_7">
+     <widget class="QWidget" name="verticalLayoutWidget">
       <property name="geometry">
        <rect>
-        <x>99</x>
-        <y>300</y>
-        <width>171</width>
+        <x>150</x>
+        <y>80</y>
+        <width>291</width>
+        <height>231</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="QListWidget" name="completedTrip"/>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="londonTripPage">
+     <widget class="QWidget" name="horizontalLayoutWidget_8">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>60</y>
+        <width>321</width>
         <height>31</height>
        </rect>
       </property>
-      <layout class="QHBoxLayout" name="confirmGeneratedTripLayout">
+      <layout class="QHBoxLayout" name="londonTripLabelLayout">
        <item>
-        <widget class="QPushButton" name="confirmGeneratedTripButton">
+        <widget class="QLabel" name="londonTripLabel">
          <property name="text">
-          <string>Continue to Item Purchase</string>
+          <string>Please Enter the Number of Cities to Visit for Your London Trip:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="horizontalLayoutWidget_9">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>90</y>
+        <width>141</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="londonTripObtainCitiesLayout">
+       <item>
+        <widget class="QLineEdit" name="obtainCitiesLineEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -356,52 +476,13 @@ min-width: 80px;
      </widget>
     </widget>
    </widget>
-   <widget class="QPushButton" name="takeLondonTripButton">
-    <property name="geometry">
-     <rect>
-      <x>550</x>
-      <y>120</y>
-      <width>191</width>
-      <height>32</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Take Trip Starting London</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="visitInitialCities">
-    <property name="geometry">
-     <rect>
-      <x>550</x>
-      <y>171</y>
-      <width>191</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Visit the Initial 11 Cities</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="makeCustomTripButton">
-    <property name="geometry">
-     <rect>
-      <x>550</x>
-      <y>70</y>
-      <width>191</width>
-      <height>32</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Make Custom Trip</string>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>773</width>
+     <width>906</width>
      <height>21</height>
     </rect>
    </property>

@@ -1,7 +1,5 @@
-#pragma once
 #ifndef DBMANAGER_H
 #define DBMANAGER_H
-
 
 #include <QSqlDatabase>
 #include <QDebug>
@@ -9,14 +7,16 @@
 #include <QFile>
 #include <QTextCodec>
 #include <algorithm>
-#include <regex>
-#include "city.h"
+
+
 
 struct TraditionalFoodItems
 {
     QString name;
     double price;
 };
+
+
 
 class DbManager
 {
@@ -27,14 +27,22 @@ public:
     QVector<QString> getCities();
     QVector<TraditionalFoodItems> getMenuItems(const QString& city);
     float getDistanceInbetween(const QString & starting, const QString & ending);
-    void readInTxtFile();
+
+    void readNewCitiesTxtFile();
     bool itemExist(const QString & city, const QString & item);
+
     void deleteItem(const QString & city, const QString & item);
+
     void addItem(const QString & city, const QString & item, const double & price);
     void addEuropeanCity(const QString & city);
+
+
+
 private:
     QSqlDatabase db_manager;
     static DbManager * controller;
+
+
 };
 
 #endif // DBMANAGER_H

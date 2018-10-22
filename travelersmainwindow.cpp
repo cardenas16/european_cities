@@ -8,12 +8,27 @@ TravelersMainWindow::TravelersMainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+
+
+//centralWidget()->setStyleSheet("background-image: url(/Users/JoseCardenas/Desktop/RETIREES1015-family-travel-plans.jpg);");
+
+//setStyleSheet("background-image: url(/Users/JoseCardenas/Desktop/RETIREES1015-family-travel-plans.jpg);");
+//    QPixmap bkgnd("/Users/JoseCardenas/Desktop/RETIREES1015-family-travel-plans.jpg");
+
+//    bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
+//    QPalette palette;
+//    palette.setBrush(QPalette::Background, bkgnd);
+
+//    this->setPalette(palette);
+
+    //    DbManager::getInstance()->initDataBase();
+
+    ui->stackedWidget->setCurrentIndex(0);
+    //    ui->gridLayout_cities->
+
     populateDisplay();
 
 
-    //        DbManager::getInstance()->getCities();
-    //        DbManager::getInstance()->initDataBase();
-    //    DbManager::getInstance()->readInTxtFile();
 
     connect(ui->actionAdmin_Login, SIGNAL(triggered(bool)),this, SLOT(openAdminWindow()));
 
@@ -42,14 +57,32 @@ void TravelersMainWindow::populateDisplay()
     QVector<QString> cities = DbManager::getInstance()->getCities();
 
 
+
+    if(cities.size() <= 11)
+        methodOneTooPopluate(cities);
+    else if (cities.size() > 11 && cities.size() <= 20)
+        methodTwoTooPopluate(cities);
+    else
+        methodThreeTooPopluate(cities);
+
+
+}
+
+
+
+
+void TravelersMainWindow::methodOneTooPopluate(QVector<QString> cities)
+{
+
     int row = 0;
     int col = 0;
+
+
 
     for(int index = 0; index < cities.size(); index++)
     {
         // a call to the db manager to get the distance betweem two cities, passes the starting ctiy name and then the ending city name
-        int distanceToBerlin = DbManager::getInstance()->getDistanceInbetween(cities[index], "Berlin");
-
+        float distanceToBerlin = DbManager::getInstance()->getDistanceInbetween(cities[index], "Berlin");
 
         // creates a new push button, the button is displayed with the name of the city and the distance to berlin
         QPushButton* cityName = new QPushButton(cities[index]+ "\nDistance to Berlin: " + QString::number(distanceToBerlin) ,this);
@@ -73,11 +106,93 @@ void TravelersMainWindow::populateDisplay()
         row++;
 
     }
-
-
-
 }
 
+void TravelersMainWindow::methodTwoTooPopluate(QVector<QString> cities)
+{
+    int row = 0;
+    int col = 0;
+
+
+
+    for(int index = 0; index < cities.size(); index++)
+    {
+
+        if(col == 2)
+        {
+            row++;
+            col = 0;
+        }
+
+        // a call to the db manager to get the distance betweem two cities, passes the starting ctiy name and then the ending city name
+        float distanceToBerlin = DbManager::getInstance()->getDistanceInbetween(cities[index], "Berlin");
+
+        // creates a new push button, the button is displayed with the name of the city and the distance to berlin
+        QPushButton* cityName = new QPushButton(cities[index]+ "\nDistance to Berlin: " + QString::number(distanceToBerlin) ,this);
+
+        // sets the name of the object, this will be used as a parameter in the next line
+        cityName->setObjectName(cities[index]);
+
+        // passes the name of the city, SIGNAL-> once clicked, passes this, then passes the function to call once clicked
+        connect(cityName, SIGNAL(clicked()), this, SLOT(selectedCity()));
+
+
+        cityName->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+
+        // addeds the widget to main window, by name, row, and col. COl is always set to zero so it shows it vertically
+        ui->gridLayout_cities->addWidget(cityName, row, col);
+
+        // spaces out the buttons
+        ui->gridLayout_cities->setSpacing(15);
+
+        // incremens the col count
+        col++;
+
+    }
+}
+
+void TravelersMainWindow::methodThreeTooPopluate(QVector<QString> cities)
+{
+    int row = 0;
+    int col = 0;
+
+
+
+    for(int index = 0; index < cities.size(); index++)
+    {
+
+        if(col == 3)
+        {
+            row++;
+            col = 0;
+        }
+
+        // a call to the db manager to get the distance betweem two cities, passes the starting ctiy name and then the ending city name
+        float distanceToBerlin = DbManager::getInstance()->getDistanceInbetween(cities[index], "Berlin");
+
+        // creates a new push button, the button is displayed with the name of the city and the distance to berlin
+        QPushButton* cityName = new QPushButton(cities[index]+ "\nDistance to Berlin: " + QString::number(distanceToBerlin) ,this);
+
+        // sets the name of the object, this will be used as a parameter in the next line
+        cityName->setObjectName(cities[index]);
+
+        // passes the name of the city, SIGNAL-> once clicked, passes this, then passes the function to call once clicked
+        connect(cityName, SIGNAL(clicked()), this, SLOT(selectedCity()));
+
+
+        cityName->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+
+        // addeds the widget to main window, by name, row, and col. COl is always set to zero so it shows it vertically
+        ui->gridLayout_cities->addWidget(cityName, row, col);
+
+        // spaces out the buttons
+        ui->gridLayout_cities->setSpacing(15);
+
+        // incremens the col count
+        col++;
+
+    }
+}
 
 // SLOT - this function will be called when the traveler presses a button of a certain city. It will move to index 1 of the stacked widget
 //        to display the current items the city holds
@@ -180,7 +295,7 @@ void TravelersMainWindow::on_pb_NextCity_clicked()
     // for loop - displays the items inside menuItems vector
     for(int index = 0; index < menuItems.size(); index++)
     {
-         // creates a new button that will display the name of the item
+        // creates a new button that will display the name of the item
         QPushButton * item = new QPushButton(menuItems[index].name, this);
 
         item->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
@@ -206,8 +321,22 @@ void TravelersMainWindow::openAdminWindow()
 // returns to index zero of the stacked widget
 void TravelersMainWindow::on_pb_back_clicked()
 {
-     ui->stackedWidget->setCurrentIndex(0);
+    ui->stackedWidget->setCurrentIndex(0);
 }
+
+void TravelersMainWindow::openTripOperationsWindow()
+{
+    //    hide();
+    //    tripOperations = new Trip(this);
+    //    tripOperations->show();
+}
+
+
+
+
+
+
+
 
 // This function is where the user is first prompted to check an initial city
 void TravelersMainWindow::on_makeCustomTripButton_clicked()
@@ -457,7 +586,7 @@ void TravelersMainWindow::on_confirmChoicesButton_clicked()
             currentTrip = modifiedNextClosest(currentTrip, subsequentCities, startingLocation);
             ui->completedTrip->clear();
             ui->generatedTripLabel->setText("Here's The Order For Your Custom Trip!");
-            ui->distanceTraveledLabel->setText("Total Distance Traveled: " + QString::number(getDistanceTraveled(currentTrip)));
+            ui->distanceTraveledLabel->setText("Total Distance Traveled: " + QString::number(getDistanceTraveled(currentTrip)) + " Kilometers");
 
             for (int i = 0; i < currentTrip.size(); i++)
                 ui->completedTrip->addItem(QString::number(i + 1) + ": " + currentTrip[i].getName());
@@ -472,7 +601,10 @@ void TravelersMainWindow::on_errorButton_clicked()
     if (citySelectionWidget != nullptr)
         deleteCitySelectionWidget();
 
-    if (currentStep == InitialCity)
+    if (currentStep == London)
+        on_takeLondonTripButton_clicked();
+
+    else if (currentStep == InitialCity)
         on_makeCustomTripButton_clicked();
 
     else
@@ -491,28 +623,9 @@ void TravelersMainWindow::deleteCitySelectionWidget()
 
 void TravelersMainWindow::on_takeLondonTripButton_clicked()
 {
-    QSqlQuery query; // The variable we're accessing the database with
-    int numCities = 0;
-    // Request data from the database based on the base city
-    query.prepare("SELECT Ending from Distances WHERE Starting=\"London\"");
-    query.exec();
-
-    while (query.next())
-    {
-        numCities++;
-    }
-
-    currentTrip.clear();
-    currentTrip = nextClosest(currentTrip, numCities + 1, "London");
-
-    ui->completedTrip->clear();
-    ui->generatedTripLabel->setText("Here's The Order For Your Shortest Trip Starting At London!");
-    ui->distanceTraveledLabel->setText("Total Distance Traveled: " + QString::number(getDistanceTraveled(currentTrip)));
-
-    for (int i = 0; i < currentTrip.size(); i++)
-        ui->completedTrip->addItem(QString::number(i + 1) + ": " + currentTrip[i].getName());
-
-    ui->stackedWidget->setCurrentIndex(GeneratedTrip);
+    ui->stackedWidget->setCurrentIndex(LondonTrip);
+    ui->obtainCitiesLineEdit->clear();
+    currentStep = London;
 }
 
 void TravelersMainWindow::on_visitInitialCities_clicked()
@@ -524,7 +637,7 @@ void TravelersMainWindow::on_visitInitialCities_clicked()
 
     ui->completedTrip->clear();
     ui->generatedTripLabel->setText("Here's The Order For Your Initial Eleven Cities Trip!");
-    ui->distanceTraveledLabel->setText("Total Distance Traveled: " + QString::number(getDistanceTraveled(currentTrip)));
+    ui->distanceTraveledLabel->setText("Total Distance Traveled: " + QString::number(getDistanceTraveled(currentTrip)) + " Kilometers");
 
     for (int i = 0; i < currentTrip.size(); i++)
         ui->completedTrip->addItem(QString::number(i + 1) + ": " + currentTrip[i].getName());
@@ -537,4 +650,81 @@ void TravelersMainWindow::on_confirmGeneratedTripButton_clicked()
     hide();
     tripOperations = new Trip(this, currentTrip);
     tripOperations->show();
+    ui->stackedWidget->setCurrentIndex(DisplayCities);
+}
+
+
+void TravelersMainWindow::adminLoggedOut()
+{
+    qDebug() << "admin has logged out";
+    adminWindow->close();
+    show();
+}
+
+void TravelersMainWindow::on_obtainCitiesLineEdit_editingFinished()
+{
+    processLondonTrip();
+}
+
+void TravelersMainWindow::on_obtainCitiesLineEdit_returnPressed()
+{
+    processLondonTrip();
+}
+
+int TravelersMainWindow::validateNumberOfCities()
+{
+    QString userData = ui->obtainCitiesLineEdit->text();
+
+    QRegExp reg("-*\\d+");
+    reg.indexIn(userData);
+    QStringList matches = reg.capturedTexts();
+
+    if (matches.size() == 0)
+        return -1;
+
+    int numCities = matches.at(0).toInt();
+
+    QSqlQuery query;
+    query.prepare("SELECT Ending from Distances WHERE Starting=\"London\"");
+    query.exec();
+    upperBound = 0;
+
+    while (query.next())
+        upperBound++;
+
+    if ((numCities > 0) && (numCities <= upperBound))
+            return numCities;
+
+    else
+        return -1;
+}
+
+void TravelersMainWindow::processLondonTrip()
+{
+    int code = validateNumberOfCities();
+
+    if (code == -1)
+    {
+        ui->errorLabel->setText("Please Enter A Number Between 1 and " + QString::number(upperBound) + "!");
+        ui->stackedWidget->setCurrentIndex(ErrorPage);
+        ui->obtainCitiesLineEdit->clear();
+    }
+
+    else
+        generateLondonTrip(code);
+}
+
+void TravelersMainWindow::generateLondonTrip(int numCities)
+{
+    currentTrip.clear();
+    currentTrip = nextClosest(currentTrip, numCities + 1, "London");
+
+    ui->completedTrip->clear();
+    ui->generatedTripLabel->setText("Here's The Order For Your Shortest Trip Starting At London!");
+    ui->distanceTraveledLabel->setText("Total Distance Traveled: " + QString::number(getDistanceTraveled(currentTrip)) + " Kilometers");
+
+    for (int i = 0; i < currentTrip.size(); i++)
+        ui->completedTrip->addItem(QString::number(i + 1) + ": " + currentTrip[i].getName());
+
+    ui->stackedWidget->setCurrentIndex(GeneratedTrip);
 }

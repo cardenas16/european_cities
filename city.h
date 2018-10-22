@@ -1,6 +1,7 @@
-#pragma once
 #ifndef CITY_H
 #define CITY_H
+
+
 
 #include <QString>
 #include <QVector>

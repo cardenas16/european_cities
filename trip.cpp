@@ -109,6 +109,9 @@ void Trip::on_nextCityButton_clicked()
     cityCart.clear();
     currentCityIndex++;
 
+    if (currentCityIndex + 1 == currentTrip.size())
+        ui->nextCityButton->setText("Finish Trip");
+
     if (currentCityIndex >= currentTrip.size())
     {
         populateFinalTripMetrics();
@@ -228,7 +231,7 @@ void Trip::populateFinalTripMetrics()
     ui->treeWidgetLayout->addWidget(finalShoppingCart);
 
     ui->tripRecap->addItem("During your trip, you visited a total of " + QString::number(currentTrip.size()) + " cities!");
-    ui->tripRecap->addItem("During your trip, you traveled a total distance of " + QString::number(getDistanceTraveled(currentTrip)) + "!");
+    ui->tripRecap->addItem("During your trip, you traveled a total distance of " + QString::number(getDistanceTraveled(currentTrip)) + " kilometers!");
     ui->tripRecap->addItem("During your trip, you purchased a total of " + QString::number(totalItems) + " items!");
     ui->tripRecap->addItem("During your trip, you spent a total of $" + QString::number(grandTotal) + "!");
     ui->tripRecap->addItem("\n");

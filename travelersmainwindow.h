@@ -1,4 +1,3 @@
-#pragma once
 #ifndef TRAVELERSMAINWINDOW_H
 #define TRAVELERSMAINWINDOW_H
 
@@ -11,15 +10,15 @@
 #include "admin.h"
 #include "trip.h"
 #include "city.h"
-#include "dbmanager.h"
 #include <QStringList>
 #include <QLineEdit>
+#include <QtWidgets>
 
 // 'stackedPages' and 'buttonPages' represent the stackedWidget pages
 // By creating an enum for them, indexes are easier to follow and use in function definitions
-enum stackedPages { DisplayCities = 0, DisplayFoodItems, CheckableCities, ErrorPage, GeneratedTrip };
+enum stackedPages { DisplayCities = 0, DisplayFoodItems, CheckableCities, ErrorPage, GeneratedTrip, LondonTrip };
 enum buttonPages { On = 0, Off };
-enum currentStep { InitialCity = 0, AdditionalCities };
+enum currentStep { InitialCity = 0, AdditionalCities, London };
 
 namespace Ui {
 class TravelersMainWindow;
@@ -33,27 +32,37 @@ public:
     explicit TravelersMainWindow(QWidget *parent = nullptr);
     ~TravelersMainWindow();
     void populateDisplay();
+    void methodOneTooPopluate(QVector<QString> cities);
+     void methodTwoTooPopluate(QVector<QString> cities);
+    void methodThreeTooPopluate(QVector<QString> cities);
 
 private slots:
    void selectedCity();
    void on_pb_NextCity_clicked();
    void on_pb_back_clicked();
    void openAdminWindow();
+   void openTripOperationsWindow();
    void on_makeCustomTripButton_clicked();
    void on_confirmChoicesButton_clicked();
    void on_errorButton_clicked();
    void on_takeLondonTripButton_clicked();
    void on_visitInitialCities_clicked();
    void on_confirmGeneratedTripButton_clicked();
+   void adminLoggedOut();
+
+   void on_obtainCitiesLineEdit_editingFinished();
+
+   void on_obtainCitiesLineEdit_returnPressed();
 
 private:
     Ui::TravelersMainWindow *ui;
     Admin * adminWindow;
     Trip * tripOperations;
-    QDialog * myDialog; 
+    QDialog * myDialog;
     QString startingLocation;
     QListWidget *citySelectionWidget;
     int currentStep;
+    int upperBound;
     QVector<City> currentTrip;
 
     bool vectorContains(const QVector<QString>&, const QString);
@@ -62,6 +71,9 @@ private:
     bool contains(const QVector<City> &cities, const QString location);
     void populateSubsequentCustomTripOptions();
     void deleteCitySelectionWidget();
+    int validateNumberOfCities();
+    void processLondonTrip();
+    void generateLondonTrip(int numCities);
 };
 
 #endif // TRAVELERSMAINWINDOW_H
