@@ -67,8 +67,10 @@ Admin::Admin(QWidget *parent) :
 
 
 
-    // needs editing - check user validation
-    connect(ui->logOutButton,SIGNAL(clicked()),this->parent(),SLOT(adminLoggedOut()));
+
+    connect(ui->pb_back,SIGNAL(clicked()),this->parent(),SLOT(adminLoggedOut()));
+
+     connect(ui->logOutButton,SIGNAL(clicked()),this->parent(),SLOT(adminLoggedOut()));
 
     // once the data is changed in the new item cell, it will call the fuction to validate if the new item is not in the db
     connect(tableModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(newItemValidation(QModelIndex)));
@@ -112,10 +114,13 @@ void Admin::initialTableDisplay()
     tableModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
 
     // sets the headers for tableview
-    tableModel->setHeaderData(0, Qt::Horizontal, "Item");
-    tableModel->setHeaderData(1, Qt::Horizontal, "Price");
-    tableModel->setHeaderData(2, Qt::Horizontal, "Purchase Count");
-    tableModel->setHeaderData(2, Qt::Horizontal, "Purchase Amount Total");
+    tableModel->setHeaderData(0, Qt::Horizontal, "City");
+    tableModel->setHeaderData(1, Qt::Horizontal, "Item");
+    tableModel->setHeaderData(2, Qt::Horizontal, "Price");
+//    tableModel->setHeaderData(2, Qt::Horizontal, "Purchase Amount Total");
+
+    ui->tableView->hideColumn(3);
+     ui->tableView->hideColumn(4);
 
     // allows for the horizontal and vertical headers to be strechted out to fit the size of the table
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
@@ -127,19 +132,32 @@ void Admin::initialTableDisplay()
 
 void Admin::on_loginButton_clicked()
 {
-    ui->stackedWidget->setCurrentIndex(1);
 
 
-    for(QVector<QString>::iterator it = cities.begin(); it != cities.end(); it++ )
+
+    QString username = ui->lineEdit_username->text();
+    QString password = ui->lineEdit_password->text();
+
+    bool validAdmin = DbManager::getInstance()->validateAdmin(username, password);
+    if(validAdmin)
     {
-        citiesList << *it;
+         ui->stackedWidget->setCurrentIndex(1);
+
+         for(QVector<QString>::iterator it = cities.begin(); it != cities.end(); it++ )
+         {
+             citiesList << *it;
+         }
+
+         citiesModel->setStringList(citiesList);
+
+
+         ui->cityListComboBox->setModel(citiesModel);
+    }
+    else
+    {
+        QMessageBox::critical(this, tr("My Application"),tr("Invalid User."), QMessageBox::Ok );
     }
 
-    citiesModel->setStringList(citiesList);
-
-
-
-    ui->cityListComboBox->setModel(citiesModel);
 
 }
 
@@ -160,8 +178,8 @@ void Admin::setTableView(int cityIndex)
     tableModel->setHeaderData(0, Qt::Horizontal, "City");
     tableModel->setHeaderData(1, Qt::Horizontal, "Item");
     tableModel->setHeaderData(2, Qt::Horizontal, "Price");
-    tableModel->setHeaderData(3, Qt::Horizontal, "Purchase Count");
-    tableModel->setHeaderData(4, Qt::Horizontal, "Purchase Amount Total");
+//    tableModel->setHeaderData(3, Qt::Horizontal, "Purchase Count");
+//    tableModel->setHeaderData(4, Qt::Horizontal, "Purchase Amount Total");
 
     // allows for the data to be inserted into the model
     tableModel->select();
@@ -170,7 +188,9 @@ void Admin::setTableView(int cityIndex)
     // the model is set to the tableview to be displayed
     ui->tableView->setModel(tableModel);
 
-    //    ui->tableView->hideColumn(0);
+        ui->tableView->hideColumn(0);
+         ui->tableView->hideColumn(3);
+          ui->tableView->hideColumn(4);
 
 
     // sends a signal when an item has been clicked on, it passes the location of where the item is located in the tableview
@@ -489,6 +509,22 @@ void Admin::on_button_importCities_clicked()
 {
     ui->importCitiesStackWidget->setCurrentIndex(1);
     DbManager::getInstance()->readNewCitiesTxtFile();
-}
 
+    cities.clear();
+    citiesList.clear();
+
+    cities = DbManager::getInstance()->getCities();
+
+
+    for(QVector<QString>::iterator it = cities.begin(); it != cities.end(); it++ )
+    {
+        citiesList << *it;
+    }
+
+    citiesModel->setStringList(citiesList);
+
+
+
+    ui->cityListComboBox->setModel(citiesModel);
+}
 

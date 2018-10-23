@@ -10,22 +10,10 @@ TravelersMainWindow::TravelersMainWindow(QWidget *parent) :
 
 
 
-
-    //centralWidget()->setStyleSheet("background-image: url(/Users/JoseCardenas/Desktop/RETIREES1015-family-travel-plans.jpg);");
-
-    //setStyleSheet("background-image: url(/Users/JoseCardenas/Desktop/RETIREES1015-family-travel-plans.jpg);");
-    //    QPixmap bkgnd("/Users/JoseCardenas/Desktop/RETIREES1015-family-travel-plans.jpg");
-
-    //    bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
-    //    QPalette palette;
-    //    palette.setBrush(QPalette::Background, bkgnd);
-
-    //    this->setPalette(palette);
-
-    //    DbManager::getInstance()->initDataBase();
+//   DbManager::getInstance()->initDataBase();
 
     ui->stackedWidget->setCurrentIndex(0);
-    //    ui->gridLayout_cities->
+
 
     populateDisplay();
 
@@ -596,11 +584,7 @@ void TravelersMainWindow::on_confirmChoicesButton_clicked()
             currentTrip = modifiedNextClosest(currentTrip, subsequentCities, startingLocation);
             ui->completedTrip->clear();
             ui->generatedTripLabel->setText("Here's The Order For Your Custom Trip!");
-<<<<<<< HEAD
-//            ui->distanceTraveledLabel->setText("Total Distance Traveled: " + QString::number(getDistanceTraveled(currentTrip)));
-=======
             ui->distanceTraveledLabel->setText("Total Distance Traveled: " + QString::number(getDistanceTraveled(currentTrip)) + " Kilometers");
->>>>>>> origin/combinedBranch
 
             for (int i = 0; i < currentTrip.size(); i++)
                 ui->completedTrip->addItem(QString::number(i + 1) + ": " + currentTrip[i].getName());
@@ -637,34 +621,9 @@ void TravelersMainWindow::deleteCitySelectionWidget()
 
 void TravelersMainWindow::on_takeLondonTripButton_clicked()
 {
-<<<<<<< HEAD
-    QSqlQuery query; // The variable we're accessing the database with
-    int numCities = 0;
-    // Request data from the database based on the base city
-    query.prepare("SELECT Ending from Distances WHERE Starting=\"London\"");
-    query.exec();
-
-    while (query.next())
-    {
-        numCities++;
-    }
-
-    currentTrip.clear();
-    currentTrip = nextClosest(currentTrip, numCities + 1, "London");
-
-    ui->completedTrip->clear();
-    ui->generatedTripLabel->setText("Here's The Order For Your \n Shortest Trip Starting At London!");
-//    ui->distanceTraveledLabel->setText("Total Distance Traveled: " + QString::number(getDistanceTraveled(currentTrip)));
-
-    for (int i = 0; i < currentTrip.size(); i++)
-        ui->completedTrip->addItem(QString::number(i + 1) + ": " + currentTrip[i].getName());
-
-    ui->stackedWidget->setCurrentIndex(GeneratedTrip);
-=======
     ui->stackedWidget->setCurrentIndex(LondonTrip);
     ui->obtainCitiesLineEdit->clear();
     currentStep = London;
->>>>>>> origin/combinedBranch
 }
 
 void TravelersMainWindow::on_visitInitialCities_clicked()
@@ -675,13 +634,8 @@ void TravelersMainWindow::on_visitInitialCities_clicked()
     currentTrip = modifiedNextClosest(currentTrip, initialElevenCities, "Paris");
 
     ui->completedTrip->clear();
-<<<<<<< HEAD
-    ui->generatedTripLabel->setText("Here's The Order For Your \n Initial Eleven Cities Trip!");
-//    ui->distanceTraveledLabel->setText("Total Distance Traveled: " + QString::number(getDistanceTraveled(currentTrip)));
-=======
-    ui->generatedTripLabel->setText("Here's The Order For Your Initial Eleven Cities Trip!");
+    ui->generatedTripLabel->setText("Here's The Order For Your\n Initial Eleven Cities Trip!");
     ui->distanceTraveledLabel->setText("Total Distance Traveled: " + QString::number(getDistanceTraveled(currentTrip)) + " Kilometers");
->>>>>>> origin/combinedBranch
 
     for (int i = 0; i < currentTrip.size(); i++)
         ui->completedTrip->addItem(QString::number(i + 1) + ": " + currentTrip[i].getName());
@@ -749,7 +703,7 @@ void TravelersMainWindow::processLondonTrip()
 
     if (code == -1)
     {
-        ui->errorLabel->setText("Please Enter A Number Between 1 and " + QString::number(upperBound) + "!");
+        ui->errorLabel->setText("Please Enter A Number \n Between 1 and " + QString::number(upperBound) + "!");
         ui->stackedWidget->setCurrentIndex(ErrorPage);
         ui->obtainCitiesLineEdit->clear();
     }

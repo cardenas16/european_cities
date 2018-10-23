@@ -68,6 +68,7 @@ private slots:
     void on_button_importCities_clicked();
 
 
+
 private:
     Ui::Admin *ui;
     QSqlTableModel * tableModel;

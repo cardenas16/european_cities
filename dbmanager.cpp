@@ -9,7 +9,7 @@ DbManager::DbManager()
 {
     db_manager = QSqlDatabase::addDatabase("QSQLITE");
     db_manager.setDatabaseName("/Users/JoseCardenas/european_cities.db");
-//    db_manager.setDatabaseName("C:\\Users\\Jake\\Desktop\\european_cities.db");
+    //    db_manager.setDatabaseName("C:\\Users\\Jake\\Desktop\\european_cities.db");
 
     if (!db_manager.open())
     {
@@ -35,6 +35,8 @@ DbManager * DbManager::getInstance()
 void DbManager::initDataBase()
 {
     QSqlQuery query;
+    QString username = "squad";
+    QString password = "cs";
 
 
     /*
@@ -45,6 +47,12 @@ void DbManager::initDataBase()
                 " `Username`             TEXT,   "
                 " `Password`             TEXT   );"
                 );
+
+
+    query.prepare("INSERT INTO Admin(Username, Password) VALUES (:val1, :val2);");
+    query.bindValue(":val1", username);
+    query.bindValue(":val2", password);
+    query.exec();
 
 
     query.exec( "CREATE TABLE IF NOT EXISTS `Cities` ("
@@ -77,12 +85,12 @@ void DbManager::initDataBase()
 
 
     // the file for reading in the distances is initialized
-    //QFile distancesFile("/Users/JoseCardenas/Desktop/E/Distances-Table 1.csv");
-    QFile distancesFile("C:\\Users\\Jake\\Desktop\\Distances-Table 1.csv");
+    QFile distancesFile("/Users/JoseCardenas/Desktop/E/Distances-Table 1.csv");
+//    QFile distancesFile("C:\\Users\\Jake\\Desktop\\Distances-Table 1.csv");
 
     // the file for reading in the items is initialized
-    //QFile itemsFile("/Users/JoseCardenas/Desktop/E/Foods-Table 1.csv");
-    QFile itemsFile("C:\\Users\\Jake\\Desktop\\Foods-Table 1.csv");
+    QFile itemsFile("/Users/JoseCardenas/Desktop/E/Foods-Table 1.csv");
+//    QFile itemsFile("C:\\Users\\Jake\\Desktop\\Foods-Table 1.csv");
 
 
 
@@ -424,8 +432,7 @@ void DbManager::readNewCitiesTxtFile()
     QSqlQuery query;
 
     // the file for reading in the items is initialized
-    //QFile newdDistancesFile("/Users/JoseCardenas/Desktop/E/New Cities-Table 1.csv");
-    QFile newdDistancesFile("C:\\Users\\Jake\\Desktop\\New Cities-Table 1.csv");
+    QFile newdDistancesFile("/Users/JoseCardenas/Desktop/E/New Cities-Table 1.csv");
 
     if (!newdDistancesFile.open(QIODevice::ReadOnly))
         qDebug() << newdDistancesFile.errorString();
@@ -465,7 +472,7 @@ void DbManager::readNewCitiesTxtFile()
             if(query.first())
                 distanceExists =  true;
             else
-                 distanceExists =  false;
+                distanceExists =  false;
         }
         else
             distanceExists = false;
@@ -498,7 +505,7 @@ void DbManager::readNewCitiesTxtFile()
             // const run time - checks the whole vector if an element(city) exists that with the same name
             for(QVector<QString>::iterator it = cities.begin(); it != cities.end(); it++)
                 if(*it == startingCity)
-                     check = true; // check becomes true if there is a city with same name
+                    check = true; // check becomes true if there is a city with same name
 
             // if an element is not found then it is pushed back into the vector and the city is inserted into the database
             if(!check)
@@ -533,7 +540,7 @@ void DbManager::readNewCitiesTxtFile()
             if(query.first())
                 distanceExists =  true;
             else
-                 distanceExists =  false;
+                distanceExists =  false;
         }
         else
             distanceExists = false;
@@ -563,7 +570,7 @@ void DbManager::readNewCitiesTxtFile()
             // const run time - checks the whole vector if an element(city) exists that with the same name
             for(QVector<QString>::iterator it = cities.begin(); it != cities.end(); it++)
                 if(*it == startingCity)
-                     check = true; // check becomes true if there is a city with same name
+                    check = true; // check becomes true if there is a city with same name
 
             // if an element is not found then it is pushed back into the vector and the city is inserted into the database
             if(!check)
@@ -577,5 +584,28 @@ void DbManager::readNewCitiesTxtFile()
 
             check = false;
         }
+
+
+
     }
+
+}
+
+bool DbManager::validateAdmin(const QString & username, const QString &password)
+{
+    QSqlQuery query;
+    query.prepare("SELECT Username, Password FROM Admin WHERE Username=(:val1) AND Password=(:val2) ");
+    query.bindValue(":val1", username);
+    query.bindValue(":val2", password);
+
+    if(query.exec())
+    {
+        if(query.first())
+            return true;
+        else
+             return false;
+    }
+    else
+        return false;
+
 }

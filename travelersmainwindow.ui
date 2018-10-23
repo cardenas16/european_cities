@@ -80,7 +80,7 @@ color: white;
 }</string>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="showCitiesPage">
      <widget class="QWidget" name="layoutWidget">
@@ -372,9 +372,9 @@ image: url(:/resources/img/checkMark.png);
      <widget class="QWidget" name="horizontalLayoutWidget_4">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>70</y>
-        <width>801</width>
+        <x>-50</x>
+        <y>30</y>
+        <width>891</width>
         <height>121</height>
        </rect>
       </property>
@@ -405,15 +405,9 @@ font-size: 40px;
      <widget class="QWidget" name="horizontalLayoutWidget_3">
       <property name="geometry">
        <rect>
-<<<<<<< HEAD
         <x>270</x>
         <y>510</y>
         <width>160</width>
-=======
-        <x>219</x>
-        <y>171</y>
-        <width>151</width>
->>>>>>> origin/combinedBranch
         <height>32</height>
        </rect>
       </property>
@@ -438,17 +432,10 @@ background-color: #26AEE8;
      <widget class="QWidget" name="horizontalLayoutWidget_2">
       <property name="geometry">
        <rect>
-<<<<<<< HEAD
         <x>0</x>
-        <y>300</y>
+        <y>256</y>
         <width>801</width>
-        <height>67</height>
-=======
-        <x>189</x>
-        <y>140</y>
-        <width>211</width>
-        <height>31</height>
->>>>>>> origin/combinedBranch
+        <height>111</height>
        </rect>
       </property>
       <layout class="QHBoxLayout" name="errorPageLabelLayout">
@@ -483,7 +470,7 @@ font-size: 55px;
         <x>-1</x>
         <y>10</y>
         <width>801</width>
-        <height>121</height>
+        <height>161</height>
        </rect>
       </property>
       <layout class="QHBoxLayout" name="generatedTripLabelLayout">
@@ -512,17 +499,10 @@ font-size: 40px;
      <widget class="QWidget" name="horizontalLayoutWidget_7">
       <property name="geometry">
        <rect>
-<<<<<<< HEAD
         <x>240</x>
         <y>460</y>
         <width>241</width>
         <height>36</height>
-=======
-        <x>203</x>
-        <y>340</y>
-        <width>191</width>
-        <height>32</height>
->>>>>>> origin/combinedBranch
        </rect>
       </property>
       <layout class="QHBoxLayout" name="confirmGeneratedTripLayout">
@@ -584,24 +564,32 @@ font-size: 20px;
       </layout>
      </widget>
     </widget>
-    <widget class="QWidget" name="londonTripPage">
+    <widget class="QWidget" name="page">
      <widget class="QWidget" name="horizontalLayoutWidget_8">
       <property name="geometry">
        <rect>
-        <x>150</x>
-        <y>60</y>
-        <width>321</width>
-        <height>31</height>
+        <x>50</x>
+        <y>20</y>
+        <width>671</width>
+        <height>98</height>
        </rect>
       </property>
       <layout class="QHBoxLayout" name="londonTripLabelLayout">
        <item>
         <widget class="QLabel" name="londonTripLabel">
-         <property name="text">
-          <string>Please Enter the Number of Cities to Visit for Your London Trip:</string>
+         <property name="styleSheet">
+          <string notr="true">#londonTripLabel{
+
+
+color: white;
+font-weight: bold;
+font-size: 40px;
+
+}</string>
          </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
+         <property name="text">
+          <string>Please Enter the Number of 
+ Cities to Visist for Your London Trip</string>
          </property>
         </widget>
        </item>
@@ -610,28 +598,15 @@ font-size: 20px;
      <widget class="QWidget" name="horizontalLayoutWidget_9">
       <property name="geometry">
        <rect>
-        <x>240</x>
-        <y>90</y>
-        <width>141</width>
-        <height>31</height>
+        <x>179</x>
+        <y>220</y>
+        <width>341</width>
+        <height>80</height>
        </rect>
       </property>
       <layout class="QHBoxLayout" name="londonTripObtainCitiesLayout">
        <item>
-        <widget class="QLineEdit" name="obtainCitiesLineEdit">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
+        <widget class="QLineEdit" name="obtainCitiesLineEdit"/>
        </item>
       </layout>
      </widget>

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1421</width>
+    <height>983</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,10 +17,10 @@
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>60</x>
+      <x>50</x>
       <y>70</y>
-      <width>681</width>
-      <height>441</height>
+      <width>1261</width>
+      <height>601</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -30,8 +30,8 @@
      <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>150</x>
-        <y>100</y>
+        <x>570</x>
+        <y>260</y>
         <width>251</width>
         <height>56</height>
        </rect>
@@ -58,48 +58,104 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
-          <widget class="QLineEdit" name="lineEdit"/>
+          <widget class="QLineEdit" name="lineEdit_username"/>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_2"/>
+          <widget class="QLineEdit" name="lineEdit_password"/>
          </item>
         </layout>
        </item>
       </layout>
      </widget>
-     <widget class="QPushButton" name="loginButton">
+     <widget class="QWidget" name="">
       <property name="geometry">
        <rect>
-        <x>210</x>
-        <y>160</y>
-        <width>114</width>
-        <height>32</height>
+        <x>570</x>
+        <y>330</y>
+        <width>261</width>
+        <height>61</height>
        </rect>
       </property>
-      <property name="text">
-       <string>login</string>
-      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QPushButton" name="loginButton">
+         <property name="styleSheet">
+          <string notr="true">#loginButton
+{
+       padding-top: 5px;
+         padding-right: 5px;
+         padding-bottom: 5px;
+         padding-left: 5px;
+        border: 1px solid #8f8f91;
+        border-radius: 6px;
+
+background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #dadbde);
+color: white;
+font-size: 15px;
+
+opacity: 0.2;
+
+/*image: url(:/resources/img/backButton.png);*/
+}
+
+#loginButton:hover {
+
+background-color: #26AEE8;
+font-size: 18px;
+font-style: bold;
+color: white;
+
+}</string>
+         </property>
+         <property name="text">
+          <string>login</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pb_back">
+         <property name="styleSheet">
+          <string notr="true">#pb_back
+{
+       padding-top: 5px;
+         padding-right: 5px;
+         padding-bottom: 5px;
+         padding-left: 5px;
+        border: 2px solid #8f8f91;
+        border-radius: 6px;
+background-color: red; 
+/*background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #dadbde);*/
+color: white;
+font-size: 15px;
+
+opacity: 0.2;
+
+/*image: url(:/resources/img/backButton.png);*/
+}
+
+#pb_back:hover {
+
+background-color: red; 
+font-size: 20px;
+font-style: bold;
+color: white;
+
+}</string>
+         </property>
+         <property name="text">
+          <string>Back</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
     <widget class="QWidget" name="page_2">
-     <widget class="QLabel" name="label_6">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>70</y>
-        <width>121</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Purchases Made</string>
-      </property>
-     </widget>
      <widget class="QTableView" name="tableView">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>110</y>
+        <x>380</x>
+        <y>200</y>
         <width>621</width>
         <height>192</height>
        </rect>
@@ -129,8 +185,8 @@
      <widget class="QPushButton" name="newCityButton">
       <property name="geometry">
        <rect>
-        <x>100</x>
-        <y>340</y>
+        <x>460</x>
+        <y>430</y>
         <width>121</width>
         <height>32</height>
        </rect>
@@ -142,9 +198,9 @@
      <widget class="QWidget" name="layoutWidget_2">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>30</y>
-        <width>271</width>
+        <x>550</x>
+        <y>40</y>
+        <width>211</width>
         <height>32</height>
        </rect>
       </property>
@@ -164,8 +220,8 @@
      <widget class="QStackedWidget" name="newItemStackedWidget">
       <property name="geometry">
        <rect>
-        <x>230</x>
-        <y>310</y>
+        <x>590</x>
+        <y>400</y>
         <width>191</width>
         <height>101</height>
        </rect>
@@ -207,11 +263,39 @@
      <widget class="QPushButton" name="logOutButton">
       <property name="geometry">
        <rect>
-        <x>360</x>
-        <y>0</y>
-        <width>114</width>
-        <height>32</height>
+        <x>1090</x>
+        <y>550</y>
+        <width>131</width>
+        <height>41</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#logOutButton
+{
+       padding-top: 5px;
+         padding-right: 5px;
+         padding-bottom: 5px;
+         padding-left: 5px;
+        border: 2px solid #8f8f91;
+        border-radius: 6px;
+background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #dadbde);
+color:  black;
+font-weight: bold;
+font-size: 15px;
+
+opacity: 0.2;
+
+/*image: url(:/resources/img/backButton.png);*/
+}
+
+#logOutButton:hover {
+
+background-color: red; 
+font-size: 20px;
+font-style: bold;
+color: white;
+
+}</string>
       </property>
       <property name="text">
        <string>Log Out </string>
@@ -220,8 +304,8 @@
      <widget class="QStackedWidget" name="importCitiesStackWidget">
       <property name="geometry">
        <rect>
-        <x>420</x>
-        <y>320</y>
+        <x>780</x>
+        <y>410</y>
         <width>161</width>
         <height>80</height>
        </rect>
@@ -251,8 +335,8 @@
      <widget class="QWidget" name="layoutWidget_5">
       <property name="geometry">
        <rect>
-        <x>200</x>
-        <y>40</y>
+        <x>620</x>
+        <y>120</y>
         <width>220</width>
         <height>87</height>
        </rect>
@@ -309,8 +393,8 @@
      <widget class="QPushButton" name="saveButton_newCity">
       <property name="geometry">
        <rect>
-        <x>250</x>
-        <y>140</y>
+        <x>670</x>
+        <y>220</y>
         <width>114</width>
         <height>32</height>
        </rect>
@@ -322,8 +406,8 @@
      <widget class="QPushButton" name="backButton_newCity">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>380</y>
+        <x>420</x>
+        <y>460</y>
         <width>114</width>
         <height>32</height>
        </rect>
@@ -340,7 +424,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>1421</width>
      <height>22</height>
     </rect>
    </property>

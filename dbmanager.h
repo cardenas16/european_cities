@@ -36,6 +36,7 @@ public:
     void addItem(const QString & city, const QString & item, const double & price);
     void addEuropeanCity(const QString & city);
 
+    bool validateAdmin(const QString & username, const QString &password);
 
 
 private:

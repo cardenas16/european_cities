@@ -10,7 +10,9 @@ Trip::Trip(QWidget *parent) :
     finalShoppingCart = nullptr;
     currentCityIndex = 0;
     backgroundImageDisplay(currentTrip, currentCityIndex);
-    this->update();
+
+
+
 }
 
 Trip::Trip(QWidget *parent, QVector<City> trip) :
@@ -23,12 +25,14 @@ Trip::Trip(QWidget *parent, QVector<City> trip) :
     ui->purchaseHistory->setColumnCount(2);
     ui->purchaseHistory->setHorizontalHeaderLabels(HEADERS);
     ui->purchaseHistory->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->purchaseHistory->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->purchaseHistory->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     currentTrip = trip;
 
     cityCart.clear();
     currentCityIndex = 0;
 
-    backgroundImageDisplay(currentTrip, currentCityIndex);
+
 
     for (int i = 0; i < currentTrip.size(); i++)
     {
@@ -39,7 +43,7 @@ Trip::Trip(QWidget *parent, QVector<City> trip) :
     ui->tripOverviewLayout->addWidget(citiesDisplayWidget);
 
     QVector<TraditionalFoodItems> menuItems = DbManager::getInstance()->getMenuItems(currentTrip[currentCityIndex].getName());
-    ui->shoppingButtonsLabel->setText("Displaying Purchase Options From: " + currentTrip[currentCityIndex].getName());
+    ui->shoppingButtonsLabel->setText("Displaying Purchase Options \nFrom: " + currentTrip[currentCityIndex].getName());
     citiesDisplayWidget->item(currentCityIndex)->setBackgroundColor(QColor(255, 255, 102));
 
     for (int i = 0; i < menuItems.size(); i++)
@@ -54,7 +58,8 @@ Trip::Trip(QWidget *parent, QVector<City> trip) :
         ui->shoppingButtonsLayout->addWidget(foodItem);
         cityCart.insert(menuItems[i].name, 0);
     }
-    this->update();
+     backgroundImageDisplay(currentTrip, currentCityIndex);
+
 }
 
 Trip::~Trip()
@@ -81,7 +86,7 @@ void Trip::backgroundImageDisplay( QVector<City> currentTrip, int currentCityInd
     qDebug() << "currentTrip: " << currentTrip[currentCityIndex].getName();
     QString cityName = currentTrip[currentCityIndex].getName();
     QVector<QString> cities =  DbManager::getInstance()->getCities();
-    int indexOfCity = 0;
+    int indexOfCity;
     for( int index = 0; index < cities.size(); index++)
     {
         if(cities.at(index) == cityName)
@@ -92,7 +97,7 @@ void Trip::backgroundImageDisplay( QVector<City> currentTrip, int currentCityInd
     QString path;
 
 
-
+qDebug() << "index:" << indexOfCity;
     switch (indexOfCity) {
     case 0:
         path = ":/resources/img/amsterdam.jpg";
@@ -146,8 +151,8 @@ void Trip::backgroundImageDisplay( QVector<City> currentTrip, int currentCityInd
     QPalette palette;
     palette.setBrush(QPalette::Background, bkgnd);
     this->setPalette(palette);
+//     this->repaint();
 
-    this->repaint();
 
 }
 
@@ -190,13 +195,10 @@ void Trip::on_nextCityButton_clicked()
     totalSpentPerCity.push_back(getTotalSpentPerCity(cityCart));
     citiesDisplayWidget->item(currentCityIndex)->setBackgroundColor(QColor(255, 255, 255));
     cityCart.clear();
+
     currentCityIndex++;
-    backgroundImageDisplay(currentTrip, currentCityIndex);
 
 
-
-    if (currentCityIndex + 1 == currentTrip.size())
-        ui->nextCityButton->setText("Finish Trip");
 
     if (currentCityIndex >= currentTrip.size())
     {
@@ -206,7 +208,7 @@ void Trip::on_nextCityButton_clicked()
 
     citiesDisplayWidget->item(currentCityIndex)->setBackgroundColor(QColor(255, 255, 102));
     QVector<TraditionalFoodItems> menuItems = DbManager::getInstance()->getMenuItems(currentTrip[currentCityIndex].getName());
-    ui->shoppingButtonsLabel->setText("Displaying Purchase Options From: " + currentTrip[currentCityIndex].getName());
+    ui->shoppingButtonsLabel->setText("Displaying Purchase Options From: \n" + currentTrip[currentCityIndex].getName());
 
 
     for (int i = 0; i < menuItems.size(); i++)
@@ -221,6 +223,7 @@ void Trip::on_nextCityButton_clicked()
         ui->shoppingButtonsLayout->addWidget(foodItem);
         cityCart.insert(menuItems[i].name, 0);
     }
+    backgroundImageDisplay(currentTrip, currentCityIndex);
 }
 
 void Trip::on_clearHistoryButton_clicked()

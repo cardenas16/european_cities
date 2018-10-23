@@ -49,10 +49,8 @@ private slots:
    void on_visitInitialCities_clicked();
    void on_confirmGeneratedTripButton_clicked();
    void adminLoggedOut();
-
-   void on_obtainCitiesLineEdit_editingFinished();
-
    void on_obtainCitiesLineEdit_returnPressed();
+   void on_obtainCitiesLineEdit_editingFinished();
 
 private:
     Ui::TravelersMainWindow *ui;
@@ -62,8 +60,8 @@ private:
     QString startingLocation;
     QListWidget *citySelectionWidget;
     int currentStep;
-    int upperBound;
     QVector<City> currentTrip;
+    int upperBound;
 
     bool vectorContains(const QVector<QString>&, const QString);
     QVector<QString> getSelectedCities(bool initialCityOnly = false);

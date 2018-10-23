@@ -11,66 +11,67 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Trip Operations</string>
+   <string>Form</string>
   </property>
-  <widget class="QWidget" name="verticalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>460</x>
-     <y>120</y>
-     <width>131</width>
-     <height>341</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="tripOverviewLayout"/>
-  </widget>
-  <widget class="QWidget" name="horizontalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>460</x>
-     <y>80</y>
-     <width>135</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="tripOverviewLabelLayout">
-    <item>
-     <widget class="QLabel" name="tripOverviewLabel">
-      <property name="text">
-       <string>Current Vacation Plan</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
   <widget class="QStackedWidget" name="stackedWidget">
    <property name="geometry">
     <rect>
-     <x>660</x>
-     <y>70</y>
-     <width>561</width>
-     <height>451</height>
+     <x>30</x>
+     <y>30</y>
+     <width>1551</width>
+     <height>961</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">.QPushButton
+{
+	       padding-top: 5px;
+         padding-right: 5px;
+         padding-bottom: 5px;
+         padding-left: 5px;
+border-radius: 6px;
+	background:rgba(0,0,0,0.5);
+color: white;
+font-style: bold;
+font-size: 15px;
+}
+
+.QPushButton:hover {
+
+
+font-size: 20px;
+font-style: bold;
+color: white;
+
+}</string>
+   </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="shoppingPage">
     <widget class="QWidget" name="horizontalLayoutWidget_2">
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>21</y>
-       <width>231</width>
-       <height>31</height>
+       <x>480</x>
+       <y>50</y>
+       <width>631</width>
+       <height>111</height>
       </rect>
      </property>
      <layout class="QHBoxLayout" name="shoppingButtonsLabelLayout">
       <item>
        <widget class="QLabel" name="shoppingButtonsLabel">
+        <property name="styleSheet">
+         <string notr="true">#shoppingButtonsLabel
+{
+
+
+color: white;
+font-weight: bold;
+font-size: 40px;
+
+}</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -84,8 +85,8 @@
     <widget class="QWidget" name="horizontalLayoutWidget_5">
      <property name="geometry">
       <rect>
-       <x>441</x>
-       <y>401</y>
+       <x>1300</x>
+       <y>520</y>
        <width>122</width>
        <height>32</height>
       </rect>
@@ -112,8 +113,8 @@
     <widget class="QWidget" name="verticalLayoutWidget_2">
      <property name="geometry">
       <rect>
-       <x>31</x>
-       <y>51</y>
+       <x>680</x>
+       <y>170</y>
        <width>231</width>
        <height>341</height>
       </rect>
@@ -123,9 +124,9 @@
     <widget class="QWidget" name="verticalLayoutWidget_3">
      <property name="geometry">
       <rect>
-       <x>301</x>
-       <y>51</y>
-       <width>241</width>
+       <x>1200</x>
+       <y>170</y>
+       <width>331</width>
        <height>341</height>
       </rect>
      </property>
@@ -138,10 +139,10 @@
     <widget class="QWidget" name="horizontalLayoutWidget_3">
      <property name="geometry">
       <rect>
-       <x>160</x>
-       <y>401</y>
+       <x>750</x>
+       <y>530</y>
        <width>101</width>
-       <height>32</height>
+       <height>38</height>
       </rect>
      </property>
      <layout class="QHBoxLayout" name="nextCityButtonLayout">
@@ -153,6 +154,55 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="styleSheet">
+         <string notr="true">.QPushButton {
+	color: white;
+	font-style: bold;
+font-size: 15px;
+         padding-top: 5px;
+         padding-right: 5px;
+         padding-bottom: 5px;
+         padding-left: 5px;
+        border: 4px solid #4CAF50;
+        border-radius: 6px;
+        
+       
+
+ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                              stop: 0 rgba(0,0,0,0.5), stop: 1 #dadbde);
+
+    
+/*   
+
+ min-width: 80px;     
+ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                              stop: 0 #f6f7fa, stop: 1 #dadbde);
+
+padding-top: 5px;
+         padding-right: 5px;
+         padding-bottom: 5px;
+         padding-left: 5px;
+border-radius: 6px;
+	
+color: white;
+font-style: bold;
+font-size: 15px;  */
+
+        }
+    
+        .QPushButton:hover
+        {
+
+
+
+font-size: 20px;
+font-style: bold;
+
+  
+            color: white;
+        }
+</string>
+        </property>
         <property name="text">
          <string>Next City</string>
         </property>
@@ -163,17 +213,71 @@
     <widget class="QWidget" name="horizontalLayoutWidget_4">
      <property name="geometry">
       <rect>
-       <x>300</x>
-       <y>20</y>
-       <width>241</width>
-       <height>31</height>
+       <x>1190</x>
+       <y>90</y>
+       <width>331</width>
+       <height>50</height>
       </rect>
      </property>
      <layout class="QHBoxLayout" name="purchaseHistoryLabelLayout">
       <item>
        <widget class="QLabel" name="purchaseHistoryLabel">
+        <property name="styleSheet">
+         <string notr="true">#purchaseHistoryLabel
+{
+
+
+color: white;
+font-weight: bold;
+font-size: 40px;
+
+}</string>
+        </property>
         <property name="text">
          <string>Purchase History</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="verticalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>210</y>
+       <width>131</width>
+       <height>341</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="tripOverviewLayout"/>
+    </widget>
+    <widget class="QWidget" name="horizontalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>90</y>
+       <width>397</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="tripOverviewLabelLayout">
+      <item>
+       <widget class="QLabel" name="tripOverviewLabel">
+        <property name="styleSheet">
+         <string notr="true">#tripOverviewLabel{
+
+
+color: white;
+font-weight: bold;
+font-size: 40px;
+
+}</string>
+        </property>
+        <property name="text">
+         <string>Current Vacation Plan</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -187,8 +291,8 @@
     <widget class="QWidget" name="verticalLayoutWidget_4">
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>50</y>
+       <x>190</x>
+       <y>200</y>
        <width>261</width>
        <height>341</height>
       </rect>
@@ -198,17 +302,28 @@
     <widget class="QWidget" name="horizontalLayoutWidget_6">
      <property name="geometry">
       <rect>
-       <x>29</x>
-       <y>20</y>
-       <width>271</width>
-       <height>31</height>
+       <x>90</x>
+       <y>80</y>
+       <width>511</width>
+       <height>98</height>
       </rect>
      </property>
      <layout class="QHBoxLayout" name="finalShoppingCartLabelLayout">
       <item>
        <widget class="QLabel" name="finalShoppingCartLabel">
+        <property name="styleSheet">
+         <string notr="true">#finalShoppingCartLabel{
+
+background:rgba(0,0,0,0.5);
+color: #FBFF28;
+font-weight: bold;
+font-size: 40px;
+
+}</string>
+        </property>
         <property name="text">
-         <string>Overview of All Purchases Made During Trip</string>
+         <string>Overview of All Purchases
+ Made During Trip</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -220,10 +335,10 @@
     <widget class="QWidget" name="verticalLayoutWidget_5">
      <property name="geometry">
       <rect>
-       <x>330</x>
-       <y>50</y>
-       <width>211</width>
-       <height>341</height>
+       <x>710</x>
+       <y>410</y>
+       <width>591</width>
+       <height>231</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="tripRecapLayout">
@@ -257,15 +372,24 @@
     <widget class="QWidget" name="horizontalLayoutWidget_7">
      <property name="geometry">
       <rect>
-       <x>329</x>
-       <y>20</y>
-       <width>211</width>
-       <height>31</height>
+       <x>830</x>
+       <y>330</y>
+       <width>261</width>
+       <height>61</height>
       </rect>
      </property>
      <layout class="QHBoxLayout" name="tripRecapLabelLayout">
       <item>
        <widget class="QLabel" name="tripRecapLabel">
+        <property name="styleSheet">
+         <string notr="true">#tripRecapLabel{
+background:rgba(0,0,0,0.5);
+color: #FBFF28;
+font-weight: bold;
+font-size: 50px;
+
+}</string>
+        </property>
         <property name="text">
          <string>Trip Recap</string>
         </property>
@@ -279,8 +403,8 @@
     <widget class="QWidget" name="horizontalLayoutWidget_8">
      <property name="geometry">
       <rect>
-       <x>440</x>
-       <y>400</y>
+       <x>1200</x>
+       <y>670</y>
        <width>109</width>
        <height>32</height>
       </rect>
@@ -303,9 +427,6 @@
     </widget>
    </widget>
   </widget>
-  <zorder>stackedWidget</zorder>
-  <zorder>verticalLayoutWidget</zorder>
-  <zorder>horizontalLayoutWidget</zorder>
  </widget>
  <resources/>
  <connections/>
