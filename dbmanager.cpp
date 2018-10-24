@@ -9,7 +9,7 @@ DbManager::DbManager()
 {
     db_manager = QSqlDatabase::addDatabase("QSQLITE");
     db_manager.setDatabaseName("/Users/JoseCardenas/european_cities.db");
-    //    db_manager.setDatabaseName("C:\\Users\\Jake\\Desktop\\european_cities.db");
+        //db_manager.setDatabaseName("C:\\Users\\Jake\\Desktop\\european_cities.db");
 
     if (!db_manager.open())
     {
@@ -86,11 +86,11 @@ void DbManager::initDataBase()
 
     // the file for reading in the distances is initialized
     QFile distancesFile("/Users/JoseCardenas/Desktop/E/Distances-Table 1.csv");
-//    QFile distancesFile("C:\\Users\\Jake\\Desktop\\Distances-Table 1.csv");
+    //QFile distancesFile("C:\\Users\\Jake\\Desktop\\Distances-Table 1.csv");
 
     // the file for reading in the items is initialized
     QFile itemsFile("/Users/JoseCardenas/Desktop/E/Foods-Table 1.csv");
-//    QFile itemsFile("C:\\Users\\Jake\\Desktop\\Foods-Table 1.csv");
+    //QFile itemsFile("C:\\Users\\Jake\\Desktop\\Foods-Table 1.csv");
 
 
 
@@ -433,6 +433,7 @@ void DbManager::readNewCitiesTxtFile()
 
     // the file for reading in the items is initialized
     QFile newdDistancesFile("/Users/JoseCardenas/Desktop/E/New Cities-Table 1.csv");
+    //QFile newdDistancesFile("C:\\Users\\Jake\\Desktop\\New Cities-Table 1.csv");
 
     if (!newdDistancesFile.open(QIODevice::ReadOnly))
         qDebug() << newdDistancesFile.errorString();

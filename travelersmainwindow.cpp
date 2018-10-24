@@ -348,6 +348,7 @@ void TravelersMainWindow::on_makeCustomTripButton_clicked()
     startingLocation = "NULL"; // reset initial city each time this page is called
     ui->makeCustomTripLayout->addWidget(citySelectionWidget); // add our checkable cities
     currentStep = InitialCity; // set the current step of trip generation
+    tripState = PreTrip;
     ui->pageDescriptionLabel->setText("Select A Starting City For Your Custom Trip!");
 
     QSqlQuery query;
@@ -624,12 +625,14 @@ void TravelersMainWindow::on_takeLondonTripButton_clicked()
     ui->stackedWidget->setCurrentIndex(LondonTrip);
     ui->obtainCitiesLineEdit->clear();
     currentStep = London;
+    tripState = PreTrip;
 }
 
 void TravelersMainWindow::on_visitInitialCities_clicked()
 {
     QVector<QString> initialElevenCities = { "Amsterdam", "Berlin", "Brussels", "Budapest", "Hamburg", "Lisbon",
                                              "London", "Madrid", "Paris", "Prague", "Rome" };
+    tripState = PreTrip;
     currentTrip.clear();
     currentTrip = modifiedNextClosest(currentTrip, initialElevenCities, "Paris");
 
@@ -649,6 +652,7 @@ void TravelersMainWindow::on_confirmGeneratedTripButton_clicked()
     tripOperations = new Trip(this, currentTrip);
     tripOperations->show();
     ui->stackedWidget->setCurrentIndex(DisplayCities);
+    tripState = ActiveTrip;
 }
 
 
@@ -656,7 +660,19 @@ void TravelersMainWindow::adminLoggedOut()
 {
     qDebug() << "admin has logged out";
     adminWindow->close();
-    show();
+
+    if (tripState == ActiveTrip)
+    {
+        tripOperations->~Trip();
+        hide();
+        tripOperations = new Trip(this, currentTrip);
+        tripOperations->show();
+        ui->stackedWidget->setCurrentIndex(DisplayCities);
+        tripState = ActiveTrip;
+    }
+
+    else
+        show();
 }
 
 void TravelersMainWindow::on_obtainCitiesLineEdit_editingFinished()
@@ -725,4 +741,9 @@ void TravelersMainWindow::generateLondonTrip(int numCities)
         ui->completedTrip->addItem(QString::number(i + 1) + ": " + currentTrip[i].getName());
 
     ui->stackedWidget->setCurrentIndex(GeneratedTrip);
+}
+
+void TravelersMainWindow::resetTripState()
+{
+    tripState = PreTrip;
 }
