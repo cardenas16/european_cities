@@ -21,6 +21,7 @@ Trip::Trip(QWidget *parent, QVector<City> trip) :
 {
     ui->setupUi(this);
     citiesDisplayWidget = new QListWidget;
+    finalShoppingCart = nullptr;
     ui->stackedWidget->setCurrentIndex(Shopping);
     ui->purchaseHistory->setColumnCount(2);
     ui->purchaseHistory->setHorizontalHeaderLabels(HEADERS);
@@ -59,7 +60,7 @@ Trip::Trip(QWidget *parent, QVector<City> trip) :
         ui->shoppingButtonsLayout->addWidget(foodItem);
         cityCart.insert(menuItems[i].name, 0);
     }
-     //backgroundImageDisplay(currentTrip, currentCityIndex);
+     backgroundImageDisplay(currentTrip, currentCityIndex);
 
 }
 
@@ -68,6 +69,7 @@ Trip::~Trip()
     delete ui;
     deleteDynamicWidget(citiesDisplayWidget);
     deleteDynamicWidget(finalShoppingCart);
+    qDebug() << "Deleted Trip";
 }
 
 template <class Type>

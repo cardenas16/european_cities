@@ -663,8 +663,8 @@ void TravelersMainWindow::adminLoggedOut()
 
     if (tripState == ActiveTrip)
     {
-        tripOperations->~Trip();
-        hide();
+        tripOperations->close();
+        delete tripOperations;
         tripOperations = new Trip(this, currentTrip);
         tripOperations->show();
         ui->stackedWidget->setCurrentIndex(DisplayCities);
