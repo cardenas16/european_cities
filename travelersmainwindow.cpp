@@ -660,6 +660,7 @@ void TravelersMainWindow::adminLoggedOut()
 {
     qDebug() << "admin has logged out";
     adminWindow->close();
+<<<<<<< HEAD
     show();
 
 //    if (tripState == ActiveTrip)
@@ -674,6 +675,21 @@ void TravelersMainWindow::adminLoggedOut()
 
 //    else
 //        show();
+=======
+
+    if (tripState == ActiveTrip)
+    {
+        tripOperations->close();
+        delete tripOperations;
+        tripOperations = new Trip(this, currentTrip);
+        tripOperations->show();
+        ui->stackedWidget->setCurrentIndex(DisplayCities);
+        tripState = ActiveTrip;
+    }
+
+    else
+        show();
+>>>>>>> f8a439fba16c0e442d7f7a814b13d56a2fedfd3e
 }
 
 void TravelersMainWindow::on_obtainCitiesLineEdit_editingFinished()
