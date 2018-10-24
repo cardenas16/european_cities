@@ -59,7 +59,9 @@ Trip::Trip(QWidget *parent, QVector<City> trip) :
         ui->shoppingButtonsLayout->addWidget(foodItem);
         cityCart.insert(menuItems[i].name, 0);
     }
-     //backgroundImageDisplay(currentTrip, currentCityIndex);
+     backgroundImageDisplay(currentTrip, currentCityIndex);
+
+    connect(ui->button_backToMainMenu,SIGNAL(clicked()),this->parent(),SLOT(backToMainMenu()));
 
 }
 

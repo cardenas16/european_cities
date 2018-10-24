@@ -53,6 +53,7 @@ private slots:
    void on_obtainCitiesLineEdit_returnPressed();
    void on_obtainCitiesLineEdit_editingFinished();
    void resetTripState();
+   void backToMainMenu();
 
 private:
     Ui::TravelersMainWindow *ui;

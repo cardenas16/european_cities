@@ -33,6 +33,8 @@ private slots:
     void on_returnToMainMenuButton_clicked();
     void backgroundImageDisplay( QVector<City> currentTrip, int currentCityIndex);
 
+
+
 private:
     Ui::Trip *ui;
     QListWidget *citiesDisplayWidget;

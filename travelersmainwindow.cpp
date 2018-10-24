@@ -660,19 +660,20 @@ void TravelersMainWindow::adminLoggedOut()
 {
     qDebug() << "admin has logged out";
     adminWindow->close();
+    show();
 
-    if (tripState == ActiveTrip)
-    {
-        tripOperations->~Trip();
-        hide();
-        tripOperations = new Trip(this, currentTrip);
-        tripOperations->show();
-        ui->stackedWidget->setCurrentIndex(DisplayCities);
-        tripState = ActiveTrip;
-    }
+//    if (tripState == ActiveTrip)
+//    {
+//        delete tripOperations;
+////        hide();
+//        tripOperations = new Trip(this, currentTrip);
+//        tripOperations->show();
+//        ui->stackedWidget->setCurrentIndex(DisplayCities);
+//        tripState = ActiveTrip;
+//    }
 
-    else
-        show();
+//    else
+//        show();
 }
 
 void TravelersMainWindow::on_obtainCitiesLineEdit_editingFinished()
@@ -746,4 +747,12 @@ void TravelersMainWindow::generateLondonTrip(int numCities)
 void TravelersMainWindow::resetTripState()
 {
     tripState = PreTrip;
+}
+
+
+void TravelersMainWindow::backToMainMenu()
+{
+    tripOperations->close();
+    show();
+
 }
