@@ -19,6 +19,7 @@
 enum stackedPages { DisplayCities = 0, DisplayFoodItems, CheckableCities, ErrorPage, GeneratedTrip, LondonTrip };
 enum buttonPages { On = 0, Off };
 enum currentStep { InitialCity = 0, AdditionalCities, London };
+enum adminUpdate { PreTrip = 0, ActiveTrip };
 
 namespace Ui {
 class TravelersMainWindow;
@@ -34,7 +35,7 @@ public:
     void populateDisplay();
     void methodOneTooPopluate(QVector<QString> cities);
      void methodTwoTooPopluate(QVector<QString> cities);
-    void methodThreeTooPopluate(QVector<QString> cities);
+    void methodThreeTooPopluate(QVector<QString> cities); 
 
 private slots:
    void selectedCity();
@@ -51,6 +52,7 @@ private slots:
    void adminLoggedOut();
    void on_obtainCitiesLineEdit_returnPressed();
    void on_obtainCitiesLineEdit_editingFinished();
+   void resetTripState();
 
 private:
     Ui::TravelersMainWindow *ui;
@@ -62,6 +64,7 @@ private:
     int currentStep;
     QVector<City> currentTrip;
     int upperBound;
+    int tripState;
 
     bool vectorContains(const QVector<QString>&, const QString);
     QVector<QString> getSelectedCities(bool initialCityOnly = false);

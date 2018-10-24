@@ -28,6 +28,7 @@ Trip::Trip(QWidget *parent, QVector<City> trip) :
     ui->purchaseHistory->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->purchaseHistory->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     currentTrip = trip;
+    connect(ui->returnToMainMenuButton, SIGNAL(clicked()), this->parent(), SLOT(resetTripState()));
 
     cityCart.clear();
     currentCityIndex = 0;
@@ -58,7 +59,7 @@ Trip::Trip(QWidget *parent, QVector<City> trip) :
         ui->shoppingButtonsLayout->addWidget(foodItem);
         cityCart.insert(menuItems[i].name, 0);
     }
-     backgroundImageDisplay(currentTrip, currentCityIndex);
+     //backgroundImageDisplay(currentTrip, currentCityIndex);
 
 }
 
