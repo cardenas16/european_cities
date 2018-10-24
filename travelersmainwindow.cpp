@@ -745,5 +745,5 @@ void TravelersMainWindow::generateLondonTrip(int numCities)
 
 void TravelersMainWindow::resetTripState()
 {
-    currentStep = PreTrip;
+    tripState = PreTrip;
 }
