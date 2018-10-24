@@ -61,11 +61,10 @@ Trip::Trip(QWidget *parent, QVector<City> trip) :
         cityCart.insert(menuItems[i].name, 0);
     }
      backgroundImageDisplay(currentTrip, currentCityIndex);
-<<<<<<< HEAD
+
 
     connect(ui->button_backToMainMenu,SIGNAL(clicked()),this->parent(),SLOT(backToMainMenu()));
-=======
->>>>>>> f8a439fba16c0e442d7f7a814b13d56a2fedfd3e
+
 
 }
 

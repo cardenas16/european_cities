@@ -10,7 +10,7 @@ TravelersMainWindow::TravelersMainWindow(QWidget *parent) :
 
 
 
-//   DbManager::getInstance()->initDataBase();
+   DbManager::getInstance()->initDataBase();
 
     ui->stackedWidget->setCurrentIndex(0);
 
@@ -42,10 +42,19 @@ void TravelersMainWindow::populateDisplay()
     QStringList euroCities;
 
 
+    // removes the items displayed from the previous city before populating new item of the new city
+    while( ui->gridLayout_cities->count() )
+    {
+        QWidget* widget = ui->gridLayout_cities->itemAt(0)->widget();
+        if( widget ) {
+            ui->gridLayout_cities->removeWidget(widget);
+
+            delete widget;
+        }
+    }
+
     // vecotor of european cities is initialized by the get cities from db manager
     QVector<QString> cities = DbManager::getInstance()->getCities();
-
-
 
     if(cities.size() <= 11)
         methodOneTooPopluate(cities);
@@ -229,6 +238,10 @@ void TravelersMainWindow::selectedCity()
 
         // adds the widget to the gridlayout
         ui->gridLayout_items->addWidget(item, index, col);
+
+
+        // spaces out the buttons
+        ui->gridLayout_items->setSpacing(15);
 
     }
 
@@ -660,8 +673,12 @@ void TravelersMainWindow::adminLoggedOut()
 {
     qDebug() << "admin has logged out";
     adminWindow->close();
-<<<<<<< HEAD
-    show();
+
+
+
+    populateDisplay();
+
+//    show();s
 
 //    if (tripState == ActiveTrip)
 //    {
@@ -675,7 +692,7 @@ void TravelersMainWindow::adminLoggedOut()
 
 //    else
 //        show();
-=======
+
 
     if (tripState == ActiveTrip)
     {
@@ -689,7 +706,7 @@ void TravelersMainWindow::adminLoggedOut()
 
     else
         show();
->>>>>>> f8a439fba16c0e442d7f7a814b13d56a2fedfd3e
+
 }
 
 void TravelersMainWindow::on_obtainCitiesLineEdit_editingFinished()
